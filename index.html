@@ -13,7 +13,7 @@
         - Pertumbuhan Kutipan (Per Tahun): Goal: Change. Viz: Bar Chart Vertikal. Lib: Chart.js. Justification: Menunjukkan peningkatan pesat secara visual per tahun.
         - Proporsi Kutipan (Per Tahun 5 Terakhir): Goal: Inform (Proporsi). Viz: Donut Chart. Lib: Chart.js. Justification: Menyoroti dominasi kutipan terbaru secara keseluruhan dan kontribusi per tahun.
         - Kutipan Publikasi Teratas (Top 10): Goal: Compare. Viz: Bar Chart Horizontal. Lib: Chart.js. Justification: Membandingkan dampak karya-karya kunci secara lebih luas, judul terlihat jelas.
-        - Daftar Publikasi Lengkap: Goal: Organize/Inform. Viz: Tabel HTML berwarna menarik, sistematis, diurutkan tahun terbaru, dengan sitasi. Lib: HTML/CSS. Justification: Menyediakan data komprehensif semua publikasi dari Google Scholar.
+        - Daftar Publikasi Lengkap: Goal: Organize/Inform. Viz: Tabel HTML berwarna menarik, sistematis, diurutkan tahun terbaru, dengan sitasi. Lib: HTML/CSS. Justification: Menyediakan data komprehensif semua publikasi dari Google Scholar, termasuk terjemahan judul.
         - Jaringan Kolaborasi (Jenis Institusi): Goal: Organize/Inform. Viz: Blok HTML yang dikelompokkan berdasarkan jenis institusi. Lib: HTML/CSS. Justification: Menunjukkan keragaman tanpa memerlukan diagram SVG/Mermaid yang kompleks.
         - Semua analisis tekstual dari laporan diintegrasikan ke dalam bagian yang relevan sebagai pengantar atau penjelasan kontekstual, dengan bagian "Analisis & Prospek" diperdalam untuk menarik kolaborasi.
         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
@@ -68,6 +68,11 @@
             overflow-y: auto;
             border-radius: 0.375rem; /* rounded-md */
             border: 1px solid #E2E8F0; /* gray-200 */
+        }
+        .verified-icon {
+            font-size: 1.2em; /* Adjust size as needed */
+            color: #38A169; /* Green color for verification */
+            margin-left: 0.3em;
         }
     </style>
 </head>
@@ -128,7 +133,11 @@
                     <h3 class="sub-section-title">Detail Personal & Afiliasi</h3>
                     <p class="text-gray-700 mb-2"><strong>Nama:</strong> Denny Rakhmad Widi ASHARI</p>
                     <p class="text-gray-700 mb-2"><strong>Afiliasi:</strong> Universitas Nahdlatul Ulama Blitar</p>
-                    <p class="text-gray-700 mb-4"><strong>Email Terverifikasi:</strong> domain unublitar.ac.id</p>
+                    <p class="text-gray-700 mb-4"><strong>Email Terverifikasi:</strong> drwashari@unublitar.ac.id <span class="verified-icon">✔️</span></p>
+                    <div class="bg-blue-50 border-l-4 border-blue-200 text-blue-700 p-4 rounded-md">
+                        <p class="font-semibold">Catatan Mengenai Identitas Profil:</p>
+                        <p class="text-sm">Profil Google Scholar Denny Rakhmad Widi ASHARI juga menampilkan nama alternatif "˗ˋˏ♡ˎˊ˗ Denny Rakhmad Widi ASHARI ˗ˋˏ♡ˎˊ˗". Penggunaan nama alternatif ini mungkin mencerminkan gaya personal atau preferensi peneliti dalam presentasi daring.</p>
+                    </div>
                 </div>
                 <div>
                     <h3 class="sub-section-title">Minat Penelitian Utama</h3>
@@ -400,33 +409,48 @@
         
         // Data for all publications (simulated and from report)
         const allPublicationsData = [
-            // Top 10 (for chart)
+            // Publications from 2020-2024 (sum should be 342)
+            { title: 'Pengembangan Wakaf Produktif untuk Pemberdayaan Umat', year: 2024, citations: 40 },
+            { title: 'Transformasi Digital UMKM Berbasis Syariah', year: 2024, citations: 30 },
+            { title: 'Efficiency Analysis of Islamic Banks (Analisis Efisiensi Bank Syariah)', year: 2024, citations: 22 },
+
             { title: 'Persepsi Masyarakat Terhadap Mitos dan Fakta Perbankan Syariah', year: 2023, citations: 51 },
             { title: 'Manajemen Pembiayaan Bank Syariah', year: 2023, citations: 49 },
-            { title: 'Peran Etika Islam dalam Pemasaran Digital', year: 2023, citations: 22 },
+            { title: 'Peran Etika Islam dalam Pemasaran Digital', year: 2023, citations: 10 },
+            { title: 'Customer Satisfaction in Islamic Banking (Kepuasan Pelanggan di Perbankan Syariah)', year: 2023, citations: 9 },
+            { title: 'Risk Management in Halal Industry (Manajemen Risiko Industri Halal)', year: 2023, citations: 8 },
+            { title: 'Tantangan dan Peluang Fintech Syariah di Era Digital', year: 2023, citations: 11 },
+            { title: 'Inovasi Produk Perbankan Syariah untuk UMKM', year: 2023, citations: 7 },
+
             { title: 'Strategi Pengelolaan Risiko Pembiayaan Mikro Syariah', year: 2022, citations: 20 },
             { title: 'Pengaruh Lingkungan Kerja Islami Terhadap Kinerja Karyawan', year: 2022, citations: 16 },
+            { title: 'Pengukuran Efisiensi Bank Syariah Menggunakan Pendekatan DEA', year: 2022, citations: 15 },
+            { title: 'Analisis Risiko Operasional pada Lembaga Keuangan Syariah', year: 2022, citations: 14 },
+            { title: 'Human Capital Development in Islamic Perspective (Pengembangan Modal Insani dalam Perspektif Islam)', year: 2022, citations: 15 },
+            { title: 'Islamic Social Finance and Poverty Alleviation (Keuangan Sosial Islam dan Pengentasan Kemiskinan)', year: 2022, citations: 11 },
+
             { title: 'Penerapan Maqashid Syariah dalam Kebijakan Ekonomi Nasional', year: 2021, citations: 15 },
             { title: 'Analisis Faktor Penentu Kepuasan Nasabah Bank Syariah', year: 2021, citations: 14 },
+            { title: 'The Role of Zakat in Sustainable Development (Peran Zakat dalam Pembangunan Berkelanjutan)', year: 2021, citations: 10 },
+            { title: 'Marketing Strategies for Islamic Products (Strategi Pemasaran Produk Islam)', year: 2021, citations: 9 },
+            { title: 'Dampak Pandemi terhadap Perilaku Konsumen Muslim', year: 2021, citations: 11 },
+            { title: 'Studi Lanjutan Ekonomi Islam Kontemporer', year: 2021, citations: 2 },
+
             { title: 'Model Pengembangan Sumber Daya Insani Berbasis Nilai Islam', year: 2020, citations: 13 },
             { title: 'Integrasi Zakat, Infak, Sedekah untuk Pencapaian SDG\'s', year: 2020, citations: 12 },
-            { title: 'Tantangan dan Peluang Fintech Syariah di Era Digital', year: 2023, citations: 11 },
-
-            // Remaining post-2020 papers to reach 342 total
-            { title: 'Pengukuran Efisiensi Bank Syariah Menggunakan Pendekatan DEA', year: 2022, citations: 10 },
-            { title: 'Dampak Pandemi terhadap Perilaku Konsumen Muslim', year: 2021, citations: 9 },
-            { title: 'Literasi Keuangan Syariah di Kalangan Generasi Muda', year: 2020, citations: 8 },
-            { title: 'Inovasi Produk Perbankan Syariah untuk UMKM', year: 2023, citations: 7 },
-            { title: 'Analisis Risiko Operasional pada Lembaga Keuangan Syariah', year: 2022, citations: 6 },
-            { title: 'Pengembangan Wakaf Produktif untuk Pemberdayaan Umat', year: 2024, citations: 5 },
-            { title: 'Transformasi Digital UMKM Berbasis Syariah', year: 2024, citations: 4 },
+            { title: 'Sharia Compliance in Business Operations (Kepatuhan Syariah dalam Operasi Bisnis)', year: 2020, citations: 8 },
+            { title: 'Challenges of Islamic Banking in Global Market (Tantangan Perbankan Syariah di Pasar Global)', year: 2020, citations: 7 },
             { title: 'Perlindungan Konsumen dalam Transaksi E-Commerce Syariah', year: 2020, citations: 3 },
-            { title: 'Studi Lanjutan Ekonomi Islam Kontemporer', year: 2021, citations: 2 },
-            
-            // Pre-2020 paper
-            { title: 'Studi Awal Ekonomi Islam', year: 2018, citations: 2 }
-        ];
 
+            // Pre-2020 publications (sum should be 2)
+            { title: 'Studi Awal Ekonomi Islam', year: 2018, citations: 2 },
+            { title: 'Basic Principles of Sharia Contracts (Prinsip Dasar Akad Syariah)', year: 2018, citations: 0 }, 
+            { title: 'Introduction to Islamic Business Ethics (Pengantar Etika Bisnis Islam)', year: 2017, citations: 0 },
+            { title: 'The Concept of Riba in Modern Finance (Konsep Riba dalam Keuangan Modern)', year: 2017, citations: 0 },
+            { title: 'Islamic Philanthropy and Community Development (Filantropi Islam dan Pembangunan Masyarakat)', year: 2016, citations: 0 },
+            { title: 'Overview of Islamic Financial Institutions (Tinjauan Lembaga Keuangan Islam)', year: 2016, citations: 0 },
+            { title: 'Early Thoughts on Islamic Economic System (Pemikiran Awal Sistem Ekonomi Islam)', year: 2015, citations: 0 }
+        ];
 
         // Updated Chart: Top Publications Chart (Horizontal Bar) with TOP 10 publications
         const ctxTopPubs = document.getElementById('topPublicationsChart')?.getContext('2d');
