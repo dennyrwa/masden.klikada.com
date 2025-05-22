@@ -185,7 +185,7 @@
                         </tbody>
                 </table>
             </div>
-            <p class="text-sm text-gray-600 mt-4 italic">Sumber data: Google Scholar [span_0](start_span)[span_0](end_span)</p>
+            <p class="text-sm text-gray-600 mt-4 italic">Sumber data: Google Scholar [1]</p>
         </section>
 
         <section id="kolaborasi" class="py-8 md:py-12">
@@ -275,4 +275,154 @@
         const secondaryChartColor = '#63B3ED'; // blue-400
         const accentChartColor1 = '#A0AEC0'; // gray-500
         
-        co
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems;
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    }
+                    return label;
+                }
+            }
+        };
+
+        function wrapLabel(str, maxWidth = 16) {
+            if (typeof str!== 'string') return str;
+            if (str.length <= maxWidth) return str;
+            
+            const words = str.split(' ');
+            let currentLine = '';
+            const lines =;
+            for (const word of words) {
+                if ((currentLine + (currentLine? ' ' : '') + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine += (currentLine? ' ' : '') + word;
+                }
+            }
+            if (currentLine) lines.push(currentLine);
+            return lines.length > 0? lines : [str];
+        }
+
+        // Simulated Yearly Citation Data (Total 342 since 2020)
+        const yearlyCitationsLabels = ['2020', '2021', '2022', '2023', '2024'];
+        const yearlyCitationsData = ; 
+
+        // New Chart: Yearly Citations Growth Chart (Vertical Bar)
+        const ctxYearlyGrowth = document.getElementById('yearlyCitationsGrowthChart')?.getContext('2d');
+        if (ctxYearlyGrowth) {
+            new Chart(ctxYearlyGrowth, {
+                type: 'bar',
+                data: {
+                    labels: yearlyCitationsLabels,
+                    datasets:
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Jumlah Kutipan', color: chartFontColor }, ticks: { color: chartFontColor }, grid: { color: chartGridColor } },
+                        x: { ticks: { color: chartFontColor }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false }, title: { display: false }, tooltip: tooltipConfig }
+                }
+            });
+        }
+
+        // Existing Chart: Citations Proportion Chart (Donut) - Now showing yearly proportion
+        const ctxProportion = document.getElementById('citationsProportionChart')?.getContext('2d');
+        if (ctxProportion) {
+            const totalLast5Years = yearlyCitationsData.reduce((sum, current) => sum + current, 0);
+            const proportionLabels = yearlyCitationsLabels.map((year, index) => {
+                const percentage = ((yearlyCitationsData[index] / totalLast5Years) * 100).toFixed(1);
+                return `Tahun ${year}: ${yearlyCitationsData[index]} Kutipan (${percentage}%)`;
+            });
+
+            new Chart(ctxProportion, {
+                type: 'doughnut',
+                data: {
+                    labels: proportionLabels,
+                    datasets:,
+                        borderColor: ['#FFFFFF'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { 
+                                color: chartFontColor, 
+                                padding: 15, 
+                                font: { size: 12, weight: 'bold' } // Bold labels as requested
+                            } 
+                        },
+                        title: { display: false },
+                        tooltip: tooltipConfig
+                    }
+                }
+            });
+        }
+        
+        // Updated Chart: Top Publications Chart (Horizontal Bar) with TOP 10 publications
+        const ctxTopPubs = document.getElementById('topPublicationsChart')?.getContext('2d');
+        if (ctxTopPubs) {
+            const allPubData =;
+
+            // Sort by citations descending, then by year descending for tie-breaking
+            const sortedTopPubData = allPubData.sort((a, b) => b.citations - a.citations |
+| b.year - a.year).slice(0, 10); 
+            
+            const labels = sortedTopPubData.map(pub => wrapLabel(pub.title, 45)); // Increased maxWidth for better visibility
+            const data = sortedTopPubData.map(pub => pub.citations);
+
+            new Chart(ctxTopPubs, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Kutipan',
+                        data: data,
+                        backgroundColor: secondaryChartColor,
+                        borderColor: secondaryChartColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true, title: { display: true, text: 'Jumlah Kutipan', color: chartFontColor }, ticks: { color: chartFontColor }, grid: { color: chartGridColor } },
+                        y: { ticks: { color: chartFontColor, font: {size: 11} }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false }, title: { display: false }, tooltip: tooltipConfig }
+                }
+            });
+        }
+
+        // New: Populate Full Publications Table
+        const fullPublicationsData =;
+
+        // Sort by year descending
+        fullPublicationsData.sort((a, b) => b.year - a.year);
+
+        const tableBody = document.querySelector('#daftar-publikasi tbody');
+        if (tableBody) {
+            fullPublicationsData.forEach((pub, index) => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = index + 1;
+                row.insertCell().textContent = pub.title;
+                row.insertCell().textContent = pub.year;
+                row.insertCell().textContent = pub.citations > 0? pub.citations : '-'; // Display '-' if 0 citations
+            });
+        }
+
+    </script>
+</body>
+</html>
