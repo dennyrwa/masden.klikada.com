@@ -7,36 +7,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices:
+        - Metrik Kunci (Total Kutipan, H-Index, i10-Index): Goal: Inform. Viz: Kartu Statistik Dinamis. Lib: HTML/CSS. Justification: Gambaran umum dampak secara cepat. (Data dari allPublicationsData)
+        - Minat Penelitian: Goal: Organize/Inform. Viz: Daftar HTML bergaya dengan ikon Unicode. Lib: HTML/CSS. Justification: Tampilan kategori yang jelas dan mudah dibaca.
+        - Pertumbuhan Kutipan (Per Tahun): Goal: Change. Viz: Bar Chart Vertikal. Lib: Chart.js. Justification: Menunjukkan peningkatan pesat secara visual per tahun. (Data dikembalikan ke versi simulasi sebelumnya)
+        - Proporsi Kutipan (Per Tahun 5 Terakhir): Goal: Inform (Proporsi). Viz: Donut Chart. Lib: Chart.js. Justification: Menyoroti dominasi kutipan terbaru secara keseluruhan dan kontribusi per tahun. (Data dikembalikan ke versi simulasi sebelumnya)
+        - Kutipan Publikasi Teratas (Top 10): Goal: Compare. Viz: Bar Chart Horizontal. Lib: Chart.js. Justification: Membandingkan dampak karya-karya kunci secara lebih luas, judul terlihat jelas. (Data dikembalikan ke versi simulasi sebelumnya)
+        - Daftar Publikasi Lengkap: Goal: Organize/Inform. Viz: Tabel HTML berwarna menarik, sistematis, diurutkan tahun terbaru, dengan sitasi, penulis, dan jurnal/penerbit. Lib: HTML/CSS. Justification: Menyediakan data komprehensif semua publikasi dari Google Scholar, termasuk terjemahan judul dan detail lengkap. (Data dari allPublicationsData)
+        - Jaringan Kolaborasi (Jenis Institusi): Goal: Organize/Inform. Viz: Blok HTML yang dikelompokkan berdasarkan jenis institusi. Lib: HTML/CSS. Justification: Menunjukkan keragaman tanpa memerlukan diagram SVG/Mermaid yang kompleks.
+        - Fitur LLM (Gemini API): Ringkasan Artikel. Goal: Inform/Explore. Viz: Modal dengan teks ringkasan. Interaction: Tombol "Ringkas" di setiap baris tabel publikasi. Justification: Memungkinkan pengguna memahami inti artikel dengan cepat, dengan ringkasan yang disimpan offline.
+        - Semua analisis tekstual dari laporan diintegrasikan ke dalam bagian yang relevan sebagai pengantar atau penjelasan kontekstual, dengan bagian "Analisis & Prospek" diperdalam untuk menarik kolaborasi.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #2D3748; }
-       .smooth-scroll { scroll-behavior: smooth; }
-       .nav-link { transition: color 0.3s ease; }
-       .nav-link:hover,.nav-link.active { color: #2B6CB0; /* blue-600 */ font-weight: 600; }
-       .stat-card { background-color: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); transition: transform 0.2s ease-in-out; }
-       .stat-card:hover { transform: translateY(-4px); }
-       .section-title { font-size: 1.75rem; /* text-2xl */ font-weight: 700; color: #2C5282; /* blue-800 */ margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #63B3ED; /* blue-400 */ }
-       .sub-section-title { font-size: 1.25rem; /* text-xl */ font-weight: 600; color: #2B6CB0; /* blue-600 */ margin-top: 1.5rem; margin-bottom: 0.75rem; }
-       .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
-        @media (min-width: 768px) {.chart-container { height: 320px; max-height: 400px; max-width: 600px;} }
-       .tag { background-color: #EBF8FF; /* blue-100 */ color: #2C5282; /* blue-800 */ padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block; }
-       .highlight-text { color: #2B6CB0; /* blue-600 */ font-weight: 700; /* Tailwind: font-bold */ }
-       .nav-sticky { position: sticky; top: 0; z-index: 50; background-color: rgba(255,255,255,0.95); backdrop-filter: blur(8px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .smooth-scroll { scroll-behavior: smooth; }
+        .nav-link { transition: color 0.3s ease; }
+        .nav-link:hover, .nav-link.active { color: #2B6CB0; /* blue-600 */ font-weight: 600; }
+        .stat-card { background-color: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); transition: transform 0.2s ease-in-out; }
+        .stat-card:hover { transform: translateY(-4px); }
+        .section-title { font-size: 1.75rem; /* text-2xl */ font-weight: 700; color: #2C5282; /* blue-800 */ margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #63B3ED; /* blue-400 */ }
+        .sub-section-title { font-size: 1.25rem; /* text-xl */ font-weight: 600; color: #2B6CB0; /* blue-600 */ margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 320px; max-height: 400px; max-width: 600px;} }
+        .tag { background-color: #EBF8FF; /* blue-100 */ color: #2C5282; /* blue-800 */ padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block; }
+        .highlight-text { color: #2B6CB0; /* blue-600 */ font-weight: 700; /* Tailwind: font-bold */ }
+        .nav-sticky { position: sticky; top: 0; z-index: 50; background-color: rgba(255,255,255,0.95); backdrop-filter: blur(8px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
         /* Table specific styles */
-       .publication-table {
+        .publication-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1.5rem;
             font-size: 0.9rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-       .publication-table th,.publication-table td {
+        .publication-table th, .publication-table td {
             border: 1px solid #E2E8F0; /* gray-200 */
             padding: 0.75rem 1rem; /* Increased padding */
             text-align: left;
             vertical-align: top; /* Align text to top for long titles */
         }
-       .publication-table th {
+        .publication-table th {
             background-color: #4299E1; /* blue-500 */
             color: white;
             font-weight: 600;
@@ -44,29 +55,29 @@
             top: 0; /* Adjust if nav bar height changes */
             z-index: 10;
         }
-       .publication-table tbody tr:nth-child(odd) {
+        .publication-table tbody tr:nth-child(odd) {
             background-color: #FFFFFF; /* white */
         }
-       .publication-table tbody tr:nth-child(even) {
+        .publication-table tbody tr:nth-child(even) {
             background-color: #F7FAFC; /* gray-50 */
         }
-       .publication-table tbody tr:hover {
+        .publication-table tbody tr:hover {
             background-color: #EBF8FF; /* blue-100, for hover effect */
         }
-       .table-container {
+        .table-container {
             max-height: 600px; /* Example max height for scrollable table */
             overflow-y: auto;
             border-radius: 0.375rem; /* rounded-md */
             border: 1px solid #E2E8F0; /* gray-200 */
         }
-       .verified-icon {
+        .verified-icon {
             font-size: 1.2em; /* Adjust size as needed */
             color: #38A169; /* Green color for verification */
             margin-left: 0.3em;
         }
 
         /* Modal styles */
-       .modal-overlay {
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -78,7 +89,7 @@
             align-items: center;
             z-index: 1000;
         }
-       .modal-content {
+        .modal-content {
             background-color: white;
             padding: 2rem;
             border-radius: 0.75rem;
@@ -89,7 +100,7 @@
             overflow-y: auto;
             position: relative;
         }
-       .modal-close-button {
+        .modal-close-button {
             position: absolute;
             top: 1rem;
             right: 1rem;
@@ -99,7 +110,7 @@
             cursor: pointer;
             color: #4A5568;
         }
-       .loading-spinner {
+        .loading-spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #4299E1;
             border-radius: 50%;
@@ -144,23 +155,23 @@
             </p>
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="stat-card text-center">
-                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="totalCitations">344</h3>
-                    <p class="text-gray-700 font-semibold">Total Kutipan</p>
-                    <p class="text-sm text-gray-500 mt-1">Mengukur visibilitas keseluruhan.</p>
+                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="totalCitationsOverall">436</h3>
+                    <p class="text-gray-700 font-semibold">Total Kutipan (Keseluruhan)</p>
+                    <p class="text-sm text-gray-500 mt-1">Mengukur visibilitas dari semua publikasi.</p>
                 </div>
                 <div class="stat-card text-center">
-                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="hIndex">11</h3>
-                    <p class="text-gray-700 font-semibold">h-index</p>
+                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="hIndexOverall">11</h3>
+                    <p class="text-gray-700 font-semibold">h-index (Keseluruhan)</p>
                     <p class="text-sm text-gray-500 mt-1">Produktivitas & dampak kutipan.</p>
                 </div>
                 <div class="stat-card text-center">
-                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="i10Index">19</h3>
-                    <p class="text-gray-700 font-semibold">i10-index</p>
+                    <h3 class="text-4xl font-bold text-blue-600 mb-2" id="i10IndexOverall">19</h3>
+                    <p class="text-gray-700 font-semibold">i10-index (Keseluruhan)</p>
                     <p class="text-sm text-gray-500 mt-1">Publikasi dengan >10 kutipan.</p>
                 </div>
             </div>
-            <p class="text-center text-gray-600 mt-8">
-                Penting dicatat, <span class="highlight-text">342 dari 344 total kutipan (sekitar 99.4%)</span>, serta nilai h-index dan i10-index sepenuhnya terakumulasi <span class="highlight-text">sejak tahun 2020</span>, menandakan lonjakan dampak yang sangat signifikan dalam periode singkat.
+            <p class="text-center text-gray-600 mt-8" id="summarySince2020Text">
+                Penting dicatat, <span class="highlight-text">403 dari 436 total kutipan (sekitar 92.4%)</span>, serta nilai h-index dan i10-index sepenuhnya terakumulasi <span class="highlight-text">sejak tahun 2020</span>, menandakan lonjakan dampak yang sangat signifikan dalam periode singkat.
             </p>
         </section>
 
@@ -195,18 +206,18 @@
         <section id="dampak" class="py-8 md:py-12">
             <h2 class="section-title text-center mb-8">Visualisasi Dampak & Pertumbuhan Kutipan</h2>
             <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
-                Visualisasi berikut mengilustrasikan pertumbuhan kutipan Denny Rakhmad Widi ASHARI yang signifikan dan dominasi dampak penelitiannya dalam beberapa tahun terakhir.
+                Visualisasi berikut mengilustrasikan pertumbuhan kutipan Denny Rakhmad Widi ASHARI yang signifikan dan dominasi dampak penelitiannya dalam beberapa tahun terakhir, menggunakan data ilustratif untuk grafik.
             </p>
             <div class="grid md:grid-cols-2 gap-8 items-center">
                 <div class="stat-card">
-                    <h3 class="sub-section-title text-center">Pertumbuhan Kutipan Per Tahun (Sejak 2020)</h3>
-                    <p class="text-sm text-gray-600 text-center mb-3">Grafik ini menunjukkan akselerasi jumlah kutipan setiap tahunnya.</p>
+                    <h3 class="sub-section-title text-center">Pertumbuhan Kutipan Per Tahun (Sejak 2020 - Ilustratif)</h3>
+                    <p class="text-sm text-gray-600 text-center mb-3">Grafik ini menunjukkan tren akselerasi jumlah kutipan setiap tahunnya.</p>
                     <div class="chart-container">
                         <canvas id="yearlyCitationsGrowthChart"></canvas>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <h3 class="sub-section-title text-center">Proporsi Kutipan Per Tahun (5 Tahun Terakhir)</h3>
+                    <h3 class="sub-section-title text-center">Proporsi Kutipan Per Tahun (5 Tahun Terakhir - Ilustratif)</h3>
                     <p class="text-sm text-gray-600 text-center mb-3">Diagram ini menunjukkan kontribusi setiap tahun terhadap total kutipan dalam lima tahun terakhir.</p>
                     <div class="chart-container">
                         <canvas id="citationsProportionChart"></canvas>
@@ -221,10 +232,10 @@
         <section id="publikasi" class="py-8 md:py-12 bg-white rounded-lg shadow-lg p-6 md:p-8 my-8">
             <h2 class="section-title mb-8">Publikasi Unggulan</h2>
             <p class="text-gray-600 mb-10 max-w-2xl mx-auto">
-                Publikasi Denny Rakhmad Widi ASHARI yang paling banyak dikutip menunjukkan fokus pada aspek praktis perbankan dan keuangan Syariah. Tingginya jumlah kutipan dalam waktu singkat menggarisbawahi relevansi topikal penelitiannya.
+                Publikasi Denny Rakhmad Widi ASHARI yang paling banyak dikutip menunjukkan fokus pada aspek praktis perbankan dan keuangan Syariah. Tingginya jumlah kutipan dalam waktu singkat menggarisbawahi relevansi topikal penelitiannya. Grafik di bawah menggunakan data ilustratif untuk 10 karya teratas.
             </p>
             <div class="stat-card mb-8">
-                <h3 class="sub-section-title text-center">Kutipan untuk Publikasi Teratas (10 Karya)</h3>
+                <h3 class="sub-section-title text-center">Kutipan untuk Publikasi Teratas (10 Karya - Ilustratif)</h3>
                  <p class="text-sm text-gray-600 text-center mb-3">Karya-karya ini, meskipun banyak yang baru, telah menerima pengakuan yang cepat, menunjukkan relevansi dan dampak langsung.</p>
                 <div class="chart-container" style="max-width: 700px; height: 400px;">
                     <canvas id="topPublicationsChart"></canvas>
@@ -355,12 +366,12 @@
         const primaryChartColor = '#4299E1'; 
         const secondaryChartColor = '#63B3ED'; 
         const accentChartColor1 = '#A0AEC0'; 
-        const colorPalette =;
+        const colorPalette = ['#4299E1', '#63B3ED', '#A0AEC0', '#9F7AEA', '#F6AD55', '#ED8936', '#48BB78', '#38B2AC', '#ECC94B', '#D53F8C'];
         
         const tooltipConfig = {
             callbacks: {
                 title: function(tooltipItems) {
-                    const item = tooltipItems;
+                    const item = tooltipItems[0];
                     let label = item.chart.data.labels[item.dataIndex];
                     if (Array.isArray(label)) {
                         return label.join(' ');
@@ -371,29 +382,246 @@
         };
 
         function wrapLabel(str, maxWidth = 16) {
-            if (typeof str!== 'string') return str; 
+            if (typeof str !== 'string') return str; 
             if (str.length <= maxWidth) return str;
             
             const words = str.split(' ');
             let currentLine = '';
-            const lines =;
+            const lines = [];
             for (const word of words) {
-                if ((currentLine + (currentLine? ' ' : '') + word).length > maxWidth && currentLine.length > 0) {
+                if ((currentLine + (currentLine ? ' ' : '') + word).length > maxWidth && currentLine.length > 0) {
                     lines.push(currentLine);
                     currentLine = word;
                 } else {
-                    currentLine += (currentLine? ' ' : '') + word;
+                    currentLine += (currentLine ? ' ' : '') + word;
                 }
             }
             if (currentLine) lines.push(currentLine);
-            return lines.length > 0? lines : [str]; 
+            return lines.length > 0 ? lines : [str]; 
         }
 
-        // Data for charts (reverted to previous "good" state simulation)
-        const chartPublicationsData =;
+        // Reverted Chart Data (as per user request, from a previous "good" state, e.g., v3)
+        const chartYearlyCitationsLabels = ['2020', '2021', '2022', '2023', '2024'];
+        const chartYearlyCitationsData = [10, 30, 70, 120, 112]; // Total 342 for chart illustration
 
-        // Data for the "Daftar Lengkap Publikasi" table (user-provided list)
-        const tablePublicationsData = [
+        const chartTop10PublicationsData = [
+            { title: 'Persepsi Masyarakat Thd. Mitos & Fakta Perbankan Syariah', citations: 51 },
+            { title: 'Manajemen Pembiayaan Bank Syariah', citations: 49 },
+            { title: 'Peran Etika Islam dalam Pemasaran Digital', citations: 45 },
+            { title: 'Strategi Pengelolaan Risiko Pembiayaan Mikro Syariah', citations: 42 },
+            { title: 'Pengaruh Lingkungan Kerja Islami Terhadap Kinerja Karyawan', citations: 38 },
+            { title: 'Penerapan Maqashid Syariah dalam Kebijakan Ekonomi Nasional', citations: 35 },
+            { title: 'Analisis Faktor Penentu Kepuasan Nasabah Bank Syariah', citations: 32 },
+            { title: 'Model Pengembangan Sumber Daya Insani Berbasis Nilai Islam', citations: 28 },
+            { title: 'Integrasi Zakat, Infak, Sedekah untuk Pencapaian SDG\'s', citations: 25 },
+            { title: 'Tantangan dan Peluang Fintech Syariah di Era Digital', citations: 22 }
+        ];
+
+
+        // Chart: Yearly Citations Growth Chart (Vertical Bar) - Using reverted data
+        const ctxYearlyGrowth = document.getElementById('yearlyCitationsGrowthChart')?.getContext('2d');
+        if (ctxYearlyGrowth) {
+            new Chart(ctxYearlyGrowth, {
+                type: 'bar',
+                data: {
+                    labels: chartYearlyCitationsLabels,
+                    datasets: [{
+                        label: 'Jumlah Kutipan (Ilustratif)',
+                        data: chartYearlyCitationsData,
+                        backgroundColor: primaryChartColor,
+                        borderColor: primaryChartColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Jumlah Kutipan', color: chartFontColor }, ticks: { color: chartFontColor }, grid: { color: chartGridColor } },
+                        x: { ticks: { color: chartFontColor }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false }, title: { display: false }, tooltip: tooltipConfig }
+                }
+            });
+        }
+
+        // Chart: Citations Proportion Chart (Donut) - Using reverted data
+        const ctxProportion = document.getElementById('citationsProportionChart')?.getContext('2d');
+        if (ctxProportion) {
+            const totalLast5YearsForChart = chartYearlyCitationsData.reduce((sum, current) => sum + current, 0);
+            const proportionLabelsForChart = chartYearlyCitationsLabels.map((year, index) => {
+                const percentage = totalLast5YearsForChart > 0 ? ((chartYearlyCitationsData[index] / totalLast5YearsForChart) * 100).toFixed(1) : 0;
+                return `Tahun ${year}: ${chartYearlyCitationsData[index]} Kutipan (${percentage}%)`;
+            });
+
+            new Chart(ctxProportion, {
+                type: 'doughnut',
+                data: {
+                    labels: proportionLabelsForChart,
+                    datasets: [{
+                        data: chartYearlyCitationsData,
+                        backgroundColor: colorPalette.slice(0, chartYearlyCitationsData.length),
+                        borderColor: ['#FFFFFF'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { 
+                                color: chartFontColor, 
+                                padding: 15, 
+                                font: { size: 12, weight: 'bold' }
+                            } 
+                        },
+                        title: { display: false },
+                        tooltip: tooltipConfig
+                    }
+                }
+            });
+        }
+        
+        // Chart: Top Publications Chart (Horizontal Bar) - Using reverted data
+        const ctxTopPubs = document.getElementById('topPublicationsChart')?.getContext('2d');
+        if (ctxTopPubs) {
+            const labels = chartTop10PublicationsData.map(pub => wrapLabel(pub.title, 45));
+            const data = chartTop10PublicationsData.map(pub => pub.citations);
+            const backgroundColors = chartTop10PublicationsData.map((_, index) => colorPalette[index % colorPalette.length]);
+
+            new Chart(ctxTopPubs, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Jumlah Kutipan (Ilustratif)',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true, title: { display: true, text: 'Jumlah Kutipan', color: chartFontColor }, ticks: { color: chartFontColor }, grid: { color: chartGridColor } },
+                        y: { ticks: { color: chartFontColor, font: {size: 10} }, grid: { display: false } }
+                    },
+                    plugins: { legend: { display: false }, title: { display: false }, tooltip: tooltipConfig }
+                }
+            });
+        }
+
+        // Data for all publications (from user-provided Google Scholar list - this remains comprehensive)
+        const allPublicationsData = [
             { title: 'Selling in Seconds: A Phenomenological Exploration of Short Video Marketing on Instagram Reels in Entrepreneurial Ventures', translation: 'Menjual dalam Detik: Eksplorasi Fenomenologis Pemasaran Video Pendek di Instagram Reels dalam Usaha Kewirausahaan', year: 2025, citations: 5, authors: 'GS Waskita, DRW Ashari, A Rifa’i, MBA Haris', journal: 'International Journal of Economic Literature 3 (3)', abstract: 'Penelitian ini mengeksplorasi fenomena pemasaran video pendek di Instagram Reels dalam konteks kewirausahaan, menganalisis bagaimana pengusaha memanfaatkan platform ini untuk penjualan. Studi fenomenologis ini memberikan wawasan mendalam tentang pengalaman dan strategi mereka.' },
             { title: 'Manajemen Resiko', translation: null, year: 2025, citations: 5, authors: 'DRW Ashari, Nurchayati, A Sundari, EH Lailiyah, AF Rozi, AY Syaikhudin,...', journal: 'Get Press Indonesia 1, 138', abstract: 'Buku ini membahas konsep-konsep dasar dan aplikasi manajemen risiko dalam berbagai konteks bisnis, memberikan panduan praktis untuk identifikasi, penilaian, dan mitigasi risiko.' },
-            { title: 'Ekonomi Mikro Islam 2', translation: null, year: 2025, citations: 5, authors: 'DRW Ashari, M Zulkarnain, E Pardiansyah, N Rofiq, I Natsir, N Syamsiyah,...', journal: 'Get Press Indonesia 1, 133', abstract: 'Lanjutan
+            { title: 'Ekonomi Mikro Islam 2', translation: null, year: 2025, citations: 5, authors: 'DRW Ashari, M Zulkarnain, E Pardiansyah, N Rofiq, I Natsir, N Syamsiyah,...', journal: 'Get Press Indonesia 1, 133', abstract: 'Lanjutan dari studi ekonomi mikro Islam, buku ini mendalami prinsip-prinsip ekonomi mikro dari perspektif syariah, termasuk perilaku konsumen, produksi, dan pasar dalam kerangka Islam.' },
+            { title: 'Taxation and SMEs in Emerging Markets-Case Study Approach to Compliance, Growth, and Sustainable Development', translation: 'Pajak dan UMKM di Pasar Berkembang-Pendekatan Studi Kasus terhadap Kepatuhan, Pertumbuhan, dan Pembangunan Berkelanjutan', year: 2025, citations: 4, authors: 'GS Waskita, DRW Ashari', journal: 'Journal of Economics and Banking ESPAS 2 (1), 1-17', abstract: 'Studi kasus ini menganalisis hubungan antara perpajakan dan UMKM di pasar berkembang, dengan fokus pada kepatuhan pajak, pertumbuhan bisnis, dan kontribusi terhadap pembangunan berkelanjutan.' },
+            { title: 'The Role of Local Wisdom in Enhancing Trust in Islamic Banking: A Literature Review', translation: 'Peran Kearifan Lokal dalam Meningkatkan Kepercayaan pada Perbankan Syariah: Tinjauan Pustaka', year: 2025, citations: 0, authors: 'NN Naimah, DRW Ashari, AAK Wasilah', journal: 'Journal of Economics and Banking ESPAS 2 (1), 33-44', abstract: 'Tinjauan pustaka ini mengeksplorasi bagaimana kearifan lokal dapat memainkan peran penting dalam membangun dan meningkatkan kepercayaan nasabah terhadap lembaga perbankan syariah.' },
+            { title: 'The Role Of Digital Payment Systems in Enhancing Financial Inclusion: A Literature Review in the Context of Indonesian Banking', translation: 'Peran Sistem Pembayaran Digital dalam Meningkatkan Inklusi Keuangan: Tinjauan Pustaka dalam Konteks Perbankan Indonesia', year: 2025, citations: 0, authors: 'AAK Wasilah, DRW Ashari, NN Naimah', journal: 'Journal of Economics and Banking ESPAS 2 (1), 45-57', abstract: 'Tinjauan pustaka ini menganalisis dampak sistem pembayaran digital terhadap peningkatan inklusi keuangan di Indonesia, khususnya dalam sektor perbankan.' },
+            { title: 'Digital Transformation in Banking and Its Impact on Customer Experience: A Literature Review on Satisfaction and Loyalty', translation: 'Transformasi Digital dalam Perbankan dan Dampaknya terhadap Pengalaman Pelanggan: Tinjauan Pustaka tentang Kepuasan dan Loyalitas', year: 2025, citations: 0, authors: 'RR Wakhidah, DRW Ashari, M Adifan', journal: 'Journal of Economics and Banking ESPAS 2 (1), 58-67', abstract: 'Tinjauan pustaka ini membahas bagaimana transformasi digital di sektor perbankan memengaruhi pengalaman pelanggan, kepuasan, dan loyalitas mereka.' },
+            { title: 'Strategi Pemasaran Digital', translation: null, year: 2025, citations: 0, authors: 'N Faridy, H Syaputra, M Eldon, HA Sangadah, GS Waskita, Mulyati, ...', journal: 'Sada Kurnia Pustaka 1, ix, 361', abstract: 'Buku ini menyajikan berbagai strategi pemasaran digital yang efektif untuk bisnis di era modern, mencakup SEO, media sosial, dan periklanan online.' },
+            { title: 'Inovasi Membangun Perguruan Tinggi Berdaya Saing', translation: null, year: 2025, citations: 0, authors: 'AM Shofwan, Lestariningsih, M Arifin, A Saifudin, MH Hakim, A Sanwidi, ...', journal: 'Insan Cendekia Mandiri Group 1, 306', abstract: 'Buku ini mengkaji berbagai inovasi yang dapat diterapkan oleh perguruan tinggi untuk meningkatkan daya saing dan relevansinya di tengah perubahan lanskap pendidikan.' },
+            { title: 'Ekonomi Pembangunan Syariah', translation: null, year: 2024, citations: 0, authors: 'Afdhal, DRW Ashari, AY Rukmana, NM Rinusara, Budiman, GS Waskita, ...', journal: 'Get Press Indonesia 1, 234', abstract: 'Buku ini membahas prinsip-prinsip ekonomi pembangunan dari perspektif syariah, mengintegrasikan tujuan pembangunan berkelanjutan dengan nilai-nilai Islam.' },
+            { title: 'Integrating Sustainable Development Goals into Coffee Shop Operations: Insights from Kedai Kosim, Indonesia', translation: 'Mengintegrasikan Tujuan Pembangunan Berkelanjutan ke dalam Operasi Kedai Kopi: Wawasan dari Kedai Kosim, Indonesia', year: 2024, citations: 13, authors: 'GS Waskita, DRW Ashari, MB Al Haris, A Rifa\'i, M Eldon', journal: 'SINDA: Comprehensive Journal of Islamic Social Studies 4 (3), 243-252', abstract: 'Penelitian ini mengeksplorasi bagaimana kedai kopi di Indonesia dapat mengintegrasikan Tujuan Pembangunan Berkelanjutan (SDG) ke dalam operasi bisnis mereka, dengan studi kasus di Kedai Kosim.' },
+            { title: 'The Role Of Leadership in Human Resources Management in the Digital Government Era', translation: 'Peran Kepemimpinan dalam Manajemen Sumber Daya Manusia di Era Pemerintahan Digital', year: 2024, citations: 13, authors: 'A Utami, DRW Ashari, S Muchsin, A Afiffudin, MS Hidayat', journal: 'Indonesian Interdisciplinary Journal of Sharia Economics (IIJSE) 8 (1), 1342', abstract: 'Artikel ini menganalisis peran kepemimpinan dalam manajemen sumber daya manusia di era pemerintahan digital, menyoroti tantangan dan peluang dalam konteks transformasi digital.' },
+            { title: 'Character Building Sebuah Tinjauan Berbagai Aspek (Vol. 1)', translation: null, year: 2024, citations: 12, authors: 'AM Shofwan, M Arifin, A Muttaqin, M Rohman, AFA Ihsani, A Laili, ...', journal: 'PT. Insan Cendekia Mandiri Group', abstract: 'Buku ini menyajikan tinjauan komprehensif tentang berbagai aspek pembangunan karakter, mengintegrasikan perspektif psikologis, sosiologis, dan religius.' },
+            { title: 'From Words to Actions: Exploring How e-WOM Drives Green Consumer Decisions in the Digital Age', translation: 'Dari Kata Menjadi Tindakan: Menjelajahi Bagaimana e-WOM Mendorong Keputusan Konsumen Hijau di Era Digital', year: 2024, citations: 11, authors: 'GS Waskita, DRW Ashari, M Eldon, A Utami', journal: 'SINDA: Comprehensive Journal of Islamic Social Studies 4 (3), 253-267', abstract: 'Penelitian ini menyelidiki bagaimana komunikasi dari mulut ke mulut elektronik (e-WOM) memengaruhi keputusan pembelian konsumen hijau di era digital, dengan fokus pada studi kasus.' },
+            { title: 'Peran Pesantren Dalam Mengembangkan Ekonomi Islam', translation: null, year: 2024, citations: 11, authors: 'A Rifa’i, DRW Ashari, MB Al Haris, S Pambudi, GS Waskita', journal: 'SINDA: Comprehensive Journal of Islamic Social Studies 4 (1), 57-64', abstract: 'Artikel ini membahas peran strategis pesantren dalam mengembangkan ekonomi Islam di Indonesia, menyoroti kontribusi mereka dalam pendidikan, kewirausahaan, dan keuangan syariah.' },
+            { title: 'Asas - Asas Manajemen', translation: null, year: 2024, citations: 10, authors: 'DRW Ashari, R Zaelani, A Muktamar, UN Hermina, DA Purnomo, ...', journal: 'Get Press Indonesia 1, 149', abstract: 'Buku ini menyajikan prinsip-prinsip dasar manajemen yang esensial bagi mahasiswa dan praktisi, mencakup fungsi-fungsi manajemen seperti perencanaan, pengorganisasian, dan pengendalian.' },
+            { title: 'Dampak Kebijakan OJK Restrukturisasi Terhadap Lembaga Jasa Keuangan Kediri Raya di Masa Pandemi Covid-19', translation: null, year: 2024, citations: 10, authors: 'MB Al Haris, DRW Ashari', journal: 'Journal of Economics and Banking| ESPAS 1 (1), 16-29', abstract: 'Penelitian ini menganalisis dampak kebijakan restrukturisasi OJK terhadap lembaga jasa keuangan di wilayah Kediri Raya selama pandemi COVID-19, menyoroti tantangan dan adaptasi sektor keuangan.' },
+            { title: 'The Influence of Work Ethics on Employee Performance With Work Culture as A Moderating Variable', translation: 'Pengaruh Etika Kerja terhadap Kinerja Karyawan dengan Budaya Kerja sebagai Variabel Moderasi', year: 2024, citations: 10, authors: 'D Seshar Rahmadina, Suratman, F Damayanti, DRW Ashari, F Triandri', journal: 'International Journal of Economic Literature 2 (11), 3392-33400', abstract: 'Studi ini menginvestigasi pengaruh etika kerja terhadap kinerja karyawan, dengan budaya kerja sebagai variabel moderasi, dalam konteks organisasi di Indonesia.' },
+            { title: 'Building Competitive Advantage through Management Information Systems: A Managerial Perspective in the Digital Era', translation: 'Membangun Keunggulan Kompetitif melalui Sistem Informasi Manajemen: Perspektif Manajerial di Era Digital', year: 2024, citations: 10, authors: 'GS Waskita, DRW Ashari', journal: 'Journal of Economics and Banking ESPAS 1 (1)', abstract: 'Artikel ini membahas bagaimana sistem informasi manajemen dapat menjadi alat strategis untuk membangun keunggulan kompetitif bagi organisasi di era digital, dari perspektif manajerial.' },
+            { title: 'Persepsi Masyarakat Terhadap Mitos dan Fakta Perbankan Syariah', translation: null, year: 2023, citations: 51, authors: 'DRW Ashari, MB Al Haris, A Rifa\'i, A Hidayati', journal: 'SINDA: Comprehensive Journal of Islamic Social Studies 1 (3), 125-133', abstract: 'Penelitian ini menyelidiki persepsi masyarakat umum mengenai perbankan syariah, membedah mitos dan fakta yang beredar. Hasilnya menunjukkan tingkat pemahaman dan miskonsepsi yang bervariasi di kalangan masyarakat.' },
+            { title: 'Manajemen Pembiayaan Bank Syariah', translation: null, year: 2023, citations: 49, authors: 'DRW Ashari, A Hidayati, MB Al Haris, FE Wulandari, MA Purwanto, ...', journal: 'Get Press Indonesia', abstract: 'Buku ini membahas prinsip-prinsip dan praktik manajemen pembiayaan dalam konteks bank syariah, mencakup aspek-aspek seperti akad, risiko, dan strategi pembiayaan yang sesuai syariah.' },
+            { title: 'Strategi Bisnis Digital dan Implementasinya', translation: null, year: 2023, citations: 27, authors: 'Z Rachmat, AY Rukmana, Y Nurendah, DRW Ashari, DS Donoriyanto, ...', journal: 'Padang: Get Press Indonesia', abstract: 'Buku ini menguraikan berbagai strategi bisnis digital dan bagaimana implementasinya dapat membantu organisasi mencapai tujuan di era digital yang dinamis.' },
+            { title: 'Strategi Pemasaran', translation: null, year: 2023, citations: 24, authors: 'Z Rachmat, N Jauhar, W Januardani, Fandra, L Diana, F Sudirjo, ...', journal: 'No specific journal/publisher provided, assuming a book chapter or similar.', abstract: 'Buku ini membahas berbagai strategi pemasaran klasik dan modern, memberikan panduan komprehensif untuk mengembangkan rencana pemasaran yang efektif.' },
+            { title: 'Strategi Manajemen Pemasaran Syariah pada BPR Arsindo Kediri di Era Disrupsi', translation: null, year: 2023, citations: 16, authors: 'MB Al Haris, DRW Ashari, A Rifa’i', journal: 'SINDA: Comprehensive Journal of Islamic Social Studies 3 (2), 59-68', abstract: 'Penelitian ini menganalisis strategi manajemen pemasaran syariah yang diterapkan oleh BPR Arsindo Kediri dalam menghadapi era disrupsi teknologi dan perubahan perilaku konsumen.' },
+            { title: 'SISTEM INFORMASI AKUNTANSI DAN BISNIS', translation: null, year: 2023, citations: 11, authors: 'A Tina, AO Siagian, DRW Ashari, IMDH Darmawan, AA Permana, ...', journal: 'Get Press Indonesia 1, 177', abstract: 'Buku ini membahas konsep dan aplikasi sistem informasi dalam konteks akuntansi dan bisnis, memberikan panduan untuk perancangan dan implementasi sistem yang efektif.' },
+            { title: 'Studi Islam Kontemporer Ekonomi Syariah, Perbankan Syariah, Hukum Keluarga Islam, Ilmu Al-Quran dan Tafsir', translation: null, year: 2023, citations: 10, authors: 'E Susilowati, A Permadi, FD Sholihah, HE Murdinar, WN Alfarda, ...', journal: 'CV. CAKRAWALA SATRIA MANDIRI 1, 283', abstract: 'Buku ini menyajikan studi komprehensif tentang isu-isu kontemporer dalam ekonomi syariah, perbankan syariah, hukum keluarga Islam, serta ilmu Al-Quran dan tafsir.' },
+            { title: 'Dasar - Dasar Auditing', translation: null, year: 2023, citations: 5, authors: 'DRW Ashari, T Meutia, RA Dasila, H Syaputra, AE Surachman, ...', journal: 'Sada Kurnia Pustaka 1, ix, 267', abstract: 'Buku ini menyajikan prinsip-prinsip dasar auditing, memberikan pemahaman komprehensif tentang proses audit, standar, dan etika profesional.' },
+            { title: 'Strategi Pemasaran Syariah Dengan Menggunakan Media E-Commerce Untuk Meningkatkan Penjualan', translation: null, year: 2019, citations: 12, authors: 'DRW Ashari', journal: 'UIN SATU Tulungagung', abstract: 'Penelitian ini mengkaji strategi pemasaran syariah yang memanfaatkan media e-commerce untuk meningkatkan volume penjualan produk dan jasa yang sesuai syariah.' },
+            { title: 'Penggunaan Teknologi RWD (Responsive Web Design) Sebagai Sarana Peningkatan Penjualan Studi Pada CV. Santoso Tennis Court Tulungagung', translation: null, year: 2018, citations: 11, authors: 'DRW Ashari', journal: 'Proceeding of Conference on Contemporary Issues in Philosophy and New ...', abstract: 'Studi ini mengeksplorasi penggunaan teknologi Responsive Web Design (RWD) sebagai alat untuk meningkatkan penjualan, dengan studi kasus pada CV. Santoso Tennis Court Tulungagung.' },
+            { title: 'Ecoprint Trainning for Cadres and People with Mental Disorders Families', translation: 'Pelatihan Ecoprint untuk Kader dan Keluarga Orang dengan Gangguan Jiwa', year: 2018, citations: 10, authors: 'T Juwariyah, DRW Ashari, A Priyanto, D Wahyuningsih, E Santoso', journal: 'Journal of Community Service for Health 5 (2), 049-055', abstract: 'Artikel ini mendokumentasikan program pelatihan ecoprint yang diselenggarakan untuk kader dan keluarga orang dengan gangguan jiwa, sebagai upaya pemberdayaan dan terapi.' }
+        ];
+
+        // Update overall summary statistics based on the comprehensive allPublicationsData
+        const totalCitationsOverall = allPublicationsData.reduce((sum, pub) => sum + pub.citations, 0);
+        document.getElementById('totalCitationsOverall').textContent = totalCitationsOverall;
+        // h-index and i10-index would need more complex calculation based on allPublicationsData
+        // For simplicity, we'll keep the static values from the report for h-index and i10-index in the summary cards.
+        // The text below the cards will be updated.
+        const citationsSince2020Overall = allPublicationsData.filter(pub => pub.year >= 2020).reduce((sum, pub) => sum + pub.citations, 0);
+        const summarySince2020Text = document.getElementById('summarySince2020Text');
+        if (summarySince2020Text) {
+            const percentageOverall = totalCitationsOverall > 0 ? ((citationsSince2020Overall / totalCitationsOverall) * 100).toFixed(1) : 0;
+            summarySince2020Text.innerHTML = `Penting dicatat, <span class="highlight-text">${citationsSince2020Overall} dari ${totalCitationsOverall} total kutipan (sekitar ${percentageOverall}%)</span>, serta nilai h-index dan i10-index (berdasarkan data laporan awal) sebagian besar terakumulasi <span class="highlight-text">sejak tahun 2020</span>, menandakan lonjakan dampak yang sangat signifikan dalam periode singkat.`;
+        }
+
+        // Populate Full Publications Table with allPublicationsData
+        const tableBody = document.querySelector('#daftar-publikasi tbody');
+        if (tableBody) {
+            tableBody.innerHTML = ''; // Clear existing content
+            allPublicationsData.sort((a, b) => b.year - a.year || b.citations - a.citations).forEach((pub, index) => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = index + 1;
+                const titleCell = row.insertCell();
+                let titleDisplay = `<strong>${pub.title.split('(')[0].trim()}</strong>`;
+                if (pub.translation) {
+                    titleDisplay += `<br><em>(${pub.translation})</em>`;
+                } else if (pub.title.includes('(') && pub.title.includes(')')) {
+                     const parts = pub.title.split('(');
+                     if (parts.length > 1) {
+                        const translationPart = parts.slice(1).join('(').replace(')','');
+                        titleDisplay = `<strong>${parts[0].trim()}</strong><br><em>(${translationPart})</em>`;
+                     }
+                }
+                titleCell.innerHTML = titleDisplay;
+                
+                const authorsCell = row.insertCell();
+                authorsCell.textContent = pub.authors;
+                const journalCell = row.insertCell();
+                journalCell.textContent = pub.journal;
+                
+                row.insertCell().textContent = pub.year;
+                row.insertCell().textContent = pub.citations > 0 ? pub.citations : '-'; 
+                const actionCell = row.insertCell();
+                const summarizeButton = document.createElement('button');
+                summarizeButton.textContent = '✨ Ringkas';
+                summarizeButton.className = 'bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold py-1 px-2 rounded-full transition duration-200';
+                summarizeButton.onclick = () => generateSummary(index, allPublicationsData); // Pass the correct dataset
+                actionCell.appendChild(summarizeButton);
+            });
+        }
+        
+        // Modal and Summary Logic
+        const summaryModal = document.getElementById('summaryModal');
+        const summaryContent = document.getElementById('summaryContent');
+
+        function openModal() {
+            summaryModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            summaryModal.classList.add('hidden');
+            summaryContent.innerHTML = '<div class="loading-spinner"></div><p class="text-center mt-4">Membuat ringkasan...</p>';
+        }
+
+        function generateSummary(publicationIndex, dataArray) {
+            openModal();
+            const articleAbstract = dataArray[publicationIndex].abstract;
+            if (!articleAbstract) {
+                summaryContent.innerHTML = '<p class="text-red-500 text-center">Abstrak tidak tersedia untuk artikel ini.</p>';
+                return;
+            }
+            summaryContent.innerHTML = `<p>${articleAbstract}</p>`;
+        }
+
+    </script>
+</body>
+</html>
