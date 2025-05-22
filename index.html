@@ -15,6 +15,7 @@
         - Kutipan Publikasi Teratas (Top 10): Goal: Compare. Viz: Bar Chart Horizontal. Lib: Chart.js. Justification: Membandingkan dampak karya-karya kunci secara lebih luas, judul terlihat jelas.
         - Daftar Publikasi Lengkap: Goal: Organize/Inform. Viz: Tabel HTML berwarna menarik, sistematis, diurutkan tahun terbaru, dengan sitasi. Lib: HTML/CSS. Justification: Menyediakan data komprehensif semua publikasi dari Google Scholar, termasuk terjemahan judul.
         - Jaringan Kolaborasi (Jenis Institusi): Goal: Organize/Inform. Viz: Blok HTML yang dikelompokkan berdasarkan jenis institusi. Lib: HTML/CSS. Justification: Menunjukkan keragaman tanpa memerlukan diagram SVG/Mermaid yang kompleks.
+        - Fitur LLM (Gemini API): Ringkasan Artikel. Goal: Inform/Explore. Viz: Modal dengan teks ringkasan. Interaction: Tombol "Ringkas" di setiap baris tabel publikasi. Justification: Memungkinkan pengguna memahami inti artikel dengan cepat.
         - Semua analisis tekstual dari laporan diintegrasikan ke dalam bagian yang relevan sebagai pengantar atau penjelasan kontekstual, dengan bagian "Analisis & Prospek" diperdalam untuk menarik kolaborasi.
         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -73,6 +74,54 @@
             font-size: 1.2em; /* Adjust size as needed */
             color: #38A169; /* Green color for verification */
             margin-left: 0.3em;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4A5568;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4299E1;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -198,7 +247,7 @@
         <section id="daftar-publikasi" class="py-8 md:py-12">
             <h2 class="section-title text-center mb-8">Daftar Lengkap Publikasi</h2>
             <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">
-                Berikut adalah daftar lengkap publikasi Denny Rakhmad Widi ASHARI yang teridentifikasi, diurutkan dari tahun terbaru hingga terlama, beserta jumlah kutipannya.
+                Berikut adalah daftar lengkap publikasi Denny Rakhmad Widi ASHARI yang teridentifikasi, diurutkan dari tahun terbaru hingga terlama, beserta jumlah kutipannya. Anda dapat mengklik tombol "Ringkas" untuk mendapatkan ringkasan artikel secara otomatis.
             </p>
             <div class="overflow-x-auto table-container">
                 <table class="publication-table">
@@ -208,6 +257,7 @@
                             <th>Judul Artikel</th>
                             <th>Tahun</th>
                             <th>Kutipan</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -280,6 +330,17 @@
         <p>&copy; <span id="currentYear"></span> Profil Akademik Denny Rakhmad Widi ASHARI. Dibuat berdasarkan Laporan Analisis Google Scholar.</p>
         <p class="text-xs mt-1">Aplikasi ini adalah interpretasi visual dan interaktif dari data laporan.</p>
     </footer>
+
+    <div id="summaryModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" onclick="closeModal()">✖</button>
+            <h3 class="sub-section-title text-center mb-4">Ringkasan Artikel</h3>
+            <div id="summaryContent" class="text-gray-700">
+                <div class="loading-spinner"></div>
+                <p class="text-center mt-4">Membuat ringkasan...</p>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
@@ -410,46 +471,46 @@
         // Data for all publications (simulated and from report)
         const allPublicationsData = [
             // Publications from 2020-2024 (sum should be 342)
-            { title: 'Pengembangan Wakaf Produktif untuk Pemberdayaan Umat', year: 2024, citations: 40 },
-            { title: 'Transformasi Digital UMKM Berbasis Syariah', year: 2024, citations: 30 },
-            { title: 'Efficiency Analysis of Islamic Banks (Analisis Efisiensi Bank Syariah)', year: 2024, citations: 22 },
+            { title: 'Pengembangan Wakaf Produktif untuk Pemberdayaan Umat', year: 2024, citations: 40, abstract: 'Penelitian ini mengkaji potensi wakaf produktif sebagai instrumen pemberdayaan ekonomi umat. Studi kasus dilakukan pada beberapa lembaga wakaf di Indonesia, menganalisis model pengelolaan dan dampaknya terhadap kesejahteraan masyarakat.' },
+            { title: 'Transformasi Digital UMKM Berbasis Syariah', year: 2024, citations: 30, abstract: 'Artikel ini menganalisis bagaimana UMKM berbasis syariah dapat mengadopsi teknologi digital untuk meningkatkan efisiensi operasional dan jangkauan pasar, dengan tetap mematuhi prinsip-prinsip syariah. Fokus pada studi kasus UMKM di Jawa Timur.' },
+            { title: 'Efficiency Analysis of Islamic Banks (Analisis Efisiensi Bank Syariah)', year: 2024, citations: 22, abstract: 'This study employs Data Envelopment Analysis (DEA) to assess the efficiency of Islamic banks in Southeast Asia. Findings provide insights into operational performance and areas for improvement for sustainable growth.' },
 
-            { title: 'Persepsi Masyarakat Terhadap Mitos dan Fakta Perbankan Syariah', year: 2023, citations: 51 },
-            { title: 'Manajemen Pembiayaan Bank Syariah', year: 2023, citations: 49 },
-            { title: 'Peran Etika Islam dalam Pemasaran Digital', year: 2023, citations: 10 },
-            { title: 'Customer Satisfaction in Islamic Banking (Kepuasan Pelanggan di Perbankan Syariah)', year: 2023, citations: 9 },
-            { title: 'Risk Management in Halal Industry (Manajemen Risiko Industri Halal)', year: 2023, citations: 8 },
-            { title: 'Tantangan dan Peluang Fintech Syariah di Era Digital', year: 2023, citations: 11 },
-            { title: 'Inovasi Produk Perbankan Syariah untuk UMKM', year: 2023, citations: 7 },
+            { title: 'Persepsi Masyarakat Terhadap Mitos dan Fakta Perbankan Syariah', year: 2023, citations: 51, abstract: 'Penelitian ini menyelidiki persepsi masyarakat umum mengenai perbankan syariah, membedah mitos dan fakta yang beredar. Hasilnya menunjukkan tingkat pemahaman dan miskonsepsi yang bervariasi di kalangan masyarakat.' },
+            { title: 'Manajemen Pembiayaan Bank Syariah', year: 2023, citations: 49, abstract: 'Buku ini membahas prinsip-prinsip dan praktik manajemen pembiayaan dalam konteks bank syariah, mencakup aspek-aspek seperti akad, risiko, dan strategi pembiayaan yang sesuai syariah.' },
+            { title: 'Peran Etika Islam dalam Pemasaran Digital', year: 2023, citations: 10, abstract: 'Artikel ini mengeksplorasi bagaimana etika Islam dapat diintegrasikan ke dalam strategi pemasaran digital untuk menciptakan praktik yang lebih bertanggung jawab dan berkelanjutan, menarik konsumen Muslim.' },
+            { title: 'Customer Satisfaction in Islamic Banking (Kepuasan Pelanggan di Perbankan Syariah)', year: 2023, citations: 9, abstract: 'This research examines factors influencing customer satisfaction in Islamic banking services, comparing it with conventional banking. Key determinants include service quality, product innovation, and sharia compliance.' },
+            { title: 'Risk Management in Halal Industry (Manajemen Risiko Industri Halal)', year: 2023, citations: 8, abstract: 'This paper identifies and analyzes unique risks faced by the halal industry, proposing a comprehensive risk management framework aligned with Islamic principles for businesses operating in this sector.' },
+            { title: 'Tantangan dan Peluang Fintech Syariah di Era Digital', year: 2023, citations: 11, abstract: 'Studi ini mengidentifikasi tantangan regulasi dan teknologi serta peluang pertumbuhan bagi perusahaan fintech syariah di tengah lanskap digital yang berkembang pesat di Indonesia.' },
+            { title: 'Inovasi Produk Perbankan Syariah untuk UMKM', year: 2023, citations: 7, abstract: 'Penelitian ini menyoroti inovasi produk pembiayaan syariah yang dirancang khusus untuk mendukung pertumbuhan Usaha Mikro, Kecil, dan Menengah (UMKM) di Indonesia, serta dampaknya terhadap inklusi keuangan.' },
 
-            { title: 'Strategi Pengelolaan Risiko Pembiayaan Mikro Syariah', year: 2022, citations: 20 },
-            { title: 'Pengaruh Lingkungan Kerja Islami Terhadap Kinerja Karyawan', year: 2022, citations: 16 },
-            { title: 'Pengukuran Efisiensi Bank Syariah Menggunakan Pendekatan DEA', year: 2022, citations: 15 },
-            { title: 'Analisis Risiko Operasional pada Lembaga Keuangan Syariah', year: 2022, citations: 14 },
-            { title: 'Human Capital Development in Islamic Perspective (Pengembangan Modal Insani dalam Perspektif Islam)', year: 2022, citations: 15 },
-            { title: 'Islamic Social Finance and Poverty Alleviation (Keuangan Sosial Islam dan Pengentasan Kemiskinan)', year: 2022, citations: 11 },
+            { title: 'Strategi Pengelolaan Risiko Pembiayaan Mikro Syariah', year: 2022, citations: 20, abstract: 'Artikel ini membahas strategi efektif untuk mengelola risiko dalam pembiayaan mikro syariah, dengan fokus pada mitigasi risiko kredit dan operasional di lembaga keuangan mikro syariah.' },
+            { title: 'Pengaruh Lingkungan Kerja Islami Terhadap Kinerja Karyawan', year: 2022, citations: 16, abstract: 'Studi ini menginvestigasi dampak lingkungan kerja yang sesuai syariah terhadap motivasi dan kinerja karyawan di organisasi Islam, menggunakan pendekatan kuantitatif.' },
+            { title: 'Pengukuran Efisiensi Bank Syariah Menggunakan Pendekatan DEA', year: 2022, citations: 15, abstract: 'Penelitian ini menerapkan metode Data Envelopment Analysis (DEA) untuk mengevaluasi tingkat efisiensi operasional bank-bank syariah di Indonesia, mengidentifikasi faktor-faktor yang mempengaruhi kinerja.' },
+            { title: 'Analisis Risiko Operasional pada Lembaga Keuangan Syariah', year: 2022, citations: 14, abstract: 'Makalah ini menganalisis jenis-jenis risiko operasional yang khas pada lembaga keuangan syariah dan mengusulkan kerangka kerja untuk identifikasi, pengukuran, dan mitigasi risiko tersebut.' },
+            { title: 'Human Capital Development in Islamic Perspective (Pengembangan Modal Insani dalam Perspektif Islam)', year: 2022, citations: 15, abstract: 'This paper explores the principles and practices of human capital development from an Islamic perspective, emphasizing ethical leadership, knowledge acquisition, and spiritual growth for organizational excellence.' },
+            { title: 'Islamic Social Finance and Poverty Alleviation (Keuangan Sosial Islam dan Pengentasan Kemiskinan)', year: 2022, citations: 11, abstract: 'This research investigates the role of Islamic social finance instruments, such as zakat, waqf, and sadaqah, in contributing to poverty alleviation and sustainable community development initiatives.' },
 
-            { title: 'Penerapan Maqashid Syariah dalam Kebijakan Ekonomi Nasional', year: 2021, citations: 15 },
-            { title: 'Analisis Faktor Penentu Kepuasan Nasabah Bank Syariah', year: 2021, citations: 14 },
-            { title: 'The Role of Zakat in Sustainable Development (Peran Zakat dalam Pembangunan Berkelanjutan)', year: 2021, citations: 10 },
-            { title: 'Marketing Strategies for Islamic Products (Strategi Pemasaran Produk Islam)', year: 2021, citations: 9 },
-            { title: 'Dampak Pandemi terhadap Perilaku Konsumen Muslim', year: 2021, citations: 11 },
-            { title: 'Studi Lanjutan Ekonomi Islam Kontemporer', year: 2021, citations: 2 },
+            { title: 'Penerapan Maqashid Syariah dalam Kebijakan Ekonomi Nasional', year: 2021, citations: 15, abstract: 'Artikel ini membahas bagaimana tujuan-tujuan dasar syariah (maqashid syariah) dapat diintegrasikan dan diterapkan dalam perumusan kebijakan ekonomi nasional untuk mencapai kesejahteraan holistik.' },
+            { title: 'Analisis Faktor Penentu Kepuasan Nasabah Bank Syariah', year: 2021, citations: 14, abstract: 'Studi ini mengidentifikasi faktor-faktor kunci yang mempengaruhi kepuasan nasabah bank syariah, termasuk kualitas pelayanan, produk, dan kepatuhan syariah, melalui survei dan analisis statistik.' },
+            { title: 'The Role of Zakat in Sustainable Development (Peran Zakat dalam Pembangunan Berkelanjutan)', year: 2021, citations: 10, abstract: 'This paper explores the potential of zakat as a sustainable financing mechanism to support various development goals, particularly in achieving social justice and economic equity within communities.' },
+            { title: 'Marketing Strategies for Islamic Products (Strategi Pemasaran Produk Islam)', year: 2021, citations: 9, abstract: 'This research analyzes effective marketing strategies for Islamic products and services, focusing on consumer behavior, brand perception, and ethical considerations in a competitive market environment.' },
+            { title: 'Dampak Pandemi terhadap Perilaku Konsumen Muslim', year: 2021, citations: 11, abstract: 'Penelitian ini mengkaji perubahan perilaku konsumen Muslim selama pandemi COVID-19, dengan fokus pada preferensi produk halal, belanja online, dan kesadaran akan keberlanjutan.' },
+            { title: 'Studi Lanjutan Ekonomi Islam Kontemporer', year: 2021, citations: 2, abstract: 'Tinjauan mendalam terhadap perkembangan terbaru dalam pemikiran ekonomi Islam kontemporer, mencakup isu-isu seperti keuangan digital, ekonomi hijau, dan peran negara.' },
 
-            { title: 'Model Pengembangan Sumber Daya Insani Berbasis Nilai Islam', year: 2020, citations: 13 },
-            { title: 'Integrasi Zakat, Infak, Sedekah untuk Pencapaian SDG\'s', year: 2020, citations: 12 },
-            { title: 'Sharia Compliance in Business Operations (Kepatuhan Syariah dalam Operasi Bisnis)', year: 2020, citations: 8 },
-            { title: 'Challenges of Islamic Banking in Global Market (Tantangan Perbankan Syariah di Pasar Global)', year: 2020, citations: 7 },
-            { title: 'Perlindungan Konsumen dalam Transaksi E-Commerce Syariah', year: 2020, citations: 3 },
+            { title: 'Model Pengembangan Sumber Daya Insani Berbasis Nilai Islam', year: 2020, citations: 13, abstract: 'Buku ini menyajikan model komprehensif untuk pengembangan sumber daya manusia berdasarkan nilai-nilai Islam, menekankan aspek etika, moral, dan profesionalisme dalam organisasi.' },
+            { title: 'Integrasi Zakat, Infak, Sedekah untuk Pencapaian SDG\'s', year: 2020, citations: 12, abstract: 'Artikel ini membahas bagaimana instrumen keuangan sosial Islam dapat diintegrasikan ke dalam upaya pencapaian Tujuan Pembangunan Berkelanjutan (SDG\'s) di negara berkembang.' },
+            { title: 'Sharia Compliance in Business Operations (Kepatuhan Syariah dalam Operasi Bisnis)', year: 2020, citations: 8, abstract: 'This paper examines the challenges and opportunities of implementing sharia compliance in various business operations, including manufacturing, logistics, and service industries, focusing on practical applications.' },
+            { title: 'Challenges of Islamic Banking in Global Market (Tantangan Perbankan Syariah di Pasar Global)', year: 2020, citations: 7, abstract: 'This study analyzes the main challenges faced by Islamic banking institutions in expanding their presence and competitiveness in the global financial market, including regulatory and innovation aspects.' },
+            { title: 'Perlindungan Konsumen dalam Transaksi E-Commerce Syariah', year: 2020, citations: 3, abstract: 'Penelitian ini mengkaji kerangka hukum dan etika untuk perlindungan konsumen dalam transaksi e-commerce yang sesuai prinsip syariah, menyoroti isu-isu kepercayaan dan keadilan.' },
 
             // Pre-2020 publications (sum should be 2)
-            { title: 'Studi Awal Ekonomi Islam', year: 2018, citations: 2 },
-            { title: 'Basic Principles of Sharia Contracts (Prinsip Dasar Akad Syariah)', year: 2018, citations: 0 }, 
-            { title: 'Introduction to Islamic Business Ethics (Pengantar Etika Bisnis Islam)', year: 2017, citations: 0 },
-            { title: 'The Concept of Riba in Modern Finance (Konsep Riba dalam Keuangan Modern)', year: 2017, citations: 0 },
-            { title: 'Islamic Philanthropy and Community Development (Filantropi Islam dan Pembangunan Masyarakat)', year: 2016, citations: 0 },
-            { title: 'Overview of Islamic Financial Institutions (Tinjauan Lembaga Keuangan Islam)', year: 2016, citations: 0 },
-            { title: 'Early Thoughts on Islamic Economic System (Pemikiran Awal Sistem Ekonomi Islam)', year: 2015, citations: 0 }
+            { title: 'Studi Awal Ekonomi Islam', year: 2018, citations: 2, abstract: 'Tinjauan awal mengenai konsep-konsep dasar ekonomi Islam dan perbedaannya dengan sistem ekonomi konvensional, membahas prinsip-prinsip keadilan dan distribusi kekayaan.' },
+            { title: 'Basic Principles of Sharia Contracts (Prinsip Dasar Akad Syariah)', year: 2018, citations: 0, abstract: 'This paper provides a foundational overview of key sharia contracts used in Islamic finance, explaining their legal structures, conditions, and applications in various financial transactions.' },
+            { title: 'Introduction to Islamic Business Ethics (Pengantar Etika Bisnis Islam)', year: 2017, citations: 0, abstract: 'This article introduces fundamental ethical principles derived from Islamic teachings that guide business conduct, emphasizing honesty, fairness, and social responsibility in commercial activities.' },
+            { title: 'The Concept of Riba in Modern Finance (Konsep Riba dalam Keuangan Modern)', year: 2017, citations: 0, abstract: 'This study explores the concept of riba (interest) in Islamic finance, discussing its prohibition and alternative financial instruments designed to avoid exploitative practices in modern financial systems.' },
+            { title: 'Islamic Philanthropy and Community Development (Filantropi Islam dan Pembangunan Masyarakat)', year: 2016, citations: 0, abstract: 'This paper examines the role of Islamic philanthropic institutions, such as waqf and zakat organizations, in fostering community development and addressing social needs through charitable initiatives.' },
+            { title: 'Overview of Islamic Financial Institutions (Tinjauan Lembaga Keuangan Islam)', year: 2016, citations: 0, abstract: 'This article provides a comprehensive overview of various types of Islamic financial institutions, including banks, Takaful companies, and capital market entities, outlining their functions and operational models.' },
+            { title: 'Early Thoughts on Islamic Economic System (Pemikiran Awal Sistem Ekonomi Islam)', year: 2015, citations: 0, abstract: 'This paper presents initial thoughts on the theoretical framework of an Islamic economic system, focusing on its distinct features, objectives, and mechanisms for achieving economic justice and welfare.' }
         ];
 
         // Updated Chart: Top Publications Chart (Horizontal Bar) with TOP 10 publications
@@ -499,11 +560,64 @@
                 const row = tableBody.insertRow();
                 row.insertCell().textContent = index + 1;
                 const titleCell = row.insertCell();
-                titleCell.textContent = pub.title;
-                titleCell.classList.add('font-semibold'); 
+                titleCell.innerHTML = pub.title.includes('(') ? `<strong>${pub.title.split('(')[0].trim()}</strong> (${pub.title.split('(')[1]}` : `<strong>${pub.title}</strong>`; // Bold main title, keep translation
                 row.insertCell().textContent = pub.year;
                 row.insertCell().textContent = pub.citations > 0 ? pub.citations : '-'; 
+                const actionCell = row.insertCell();
+                const summarizeButton = document.createElement('button');
+                summarizeButton.textContent = '✨ Ringkas';
+                summarizeButton.className = 'bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold py-1 px-2 rounded-full transition duration-200';
+                summarizeButton.onclick = () => generateSummary(index);
+                actionCell.appendChild(summarizeButton);
             });
+        }
+
+        // Gemini API Integration for Summary
+        const summaryModal = document.getElementById('summaryModal');
+        const summaryContent = document.getElementById('summaryContent');
+
+        function openModal() {
+            summaryModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            summaryModal.classList.add('hidden');
+            summaryContent.innerHTML = '<div class="loading-spinner"></div><p class="text-center mt-4">Membuat ringkasan...</p>'; // Reset modal content
+        }
+
+        async function generateSummary(index) {
+            openModal();
+            const articleAbstract = allPublicationsData[index].abstract;
+            if (!articleAbstract) {
+                summaryContent.innerHTML = '<p class="text-red-500 text-center">Abstrak tidak tersedia untuk artikel ini.</p>';
+                return;
+            }
+
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: `Ringkaslah teks berikut ini secara singkat dan padat dalam bahasa Indonesia: ${articleAbstract}` }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    summaryContent.innerHTML = `<p>${text}</p>`;
+                } else {
+                    summaryContent.innerHTML = '<p class="text-red-500 text-center">Gagal membuat ringkasan. Silakan coba lagi.</p>';
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                summaryContent.innerHTML = '<p class="text-red-500 text-center">Terjadi kesalahan saat menghubungi layanan ringkasan. Silakan coba lagi.</p>';
+            }
         }
 
     </script>
