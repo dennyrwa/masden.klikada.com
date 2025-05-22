@@ -7,29 +7,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Visualization & Content Choices:
-        - Metrik Kunci (Total Kutipan, H-Index, i10-Index): Goal: Inform. Viz: Kartu Statistik Dinamis. Lib: HTML/CSS. Justification: Gambaran umum dampak secara cepat.
-        - Minat Penelitian: Goal: Organize/Inform. Viz: Daftar HTML bergaya dengan ikon Unicode. Lib: HTML/CSS. Justification: Tampilan kategori yang jelas dan mudah dibaca.
-        - Pertumbuhan Kutipan (Per Tahun): Goal: Change. Viz: Bar Chart Vertikal. Lib: Chart.js. Justification: Menunjukkan peningkatan pesat secara visual per tahun.
-        - Proporsi Kutipan (Per Tahun 5 Terakhir): Goal: Inform (Proporsi). Viz: Donut Chart. Lib: Chart.js. Justification: Menyoroti dominasi kutipan terbaru secara keseluruhan dan kontribusi per tahun.
-        - Kutipan Publikasi Teratas (Min. 15): Goal: Compare. Viz: Bar Chart Horizontal. Lib: Chart.js. Justification: Membandingkan dampak karya-karya kunci secara lebih luas.
-        - Jaringan Kolaborasi (Jenis Institusi): Goal: Organize/Inform. Viz: Blok HTML yang dikelompokkan berdasarkan jenis institusi. Lib: HTML/CSS. Justification: Menunjukkan keragaman tanpa memerlukan diagram SVG/Mermaid yang kompleks.
-        - Semua analisis tekstual dari laporan diintegrasikan ke dalam bagian yang relevan sebagai pengantar atau penjelasan kontekstual, dengan bagian "Analisis & Prospek" diperdalam untuk menarik kolaborasi.
-        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #2D3748; }
-        .smooth-scroll { scroll-behavior: smooth; }
-        .nav-link { transition: color 0.3s ease; }
-        .nav-link:hover, .nav-link.active { color: #2B6CB0; font-weight: 600; }
-        .stat-card { background-color: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); transition: transform 0.2s ease-in-out; }
-        .stat-card:hover { transform: translateY(-4px); }
-        .section-title { font-size: 1.75rem; font-weight: 700; color: #2C5282; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #63B3ED; }
-        .sub-section-title { font-size: 1.25rem; font-weight: 600; color: #2B6CB0; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-        .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
-        @media (min-width: 768px) { .chart-container { height: 320px; max-height: 400px; max-width: 600px;} }
-        .tag { background-color: #EBF8FF; color: #2C5282; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block; }
-        .highlight-text { color: #2B6CB0; font-weight: 600; }
-        .nav-sticky { position: sticky; top: 0; z-index: 50; background-color: rgba(255,255,255,0.95); backdrop-filter: blur(8px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+       .smooth-scroll { scroll-behavior: smooth; }
+       .nav-link { transition: color 0.3s ease; }
+       .nav-link:hover,.nav-link.active { color: #2B6CB0; font-weight: 600; }
+       .stat-card { background-color: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); transition: transform 0.2s ease-in-out; }
+       .stat-card:hover { transform: translateY(-4px); }
+       .section-title { font-size: 1.75rem; font-weight: 700; color: #2C5282; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #63B3ED; }
+       .sub-section-title { font-size: 1.25rem; font-weight: 600; color: #2B6CB0; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+       .chart-container { position: relative; width: 100%; max-width: 500px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) {.chart-container { height: 320px; max-height: 400px; max-width: 600px;} }
+       .tag { background-color: #EBF8FF; color: #2C5282; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block; }
+       .highlight-text { color: #2B6CB0; font-weight: 600; }
+       .nav-sticky { position: sticky; top: 0; z-index: 50; background-color: rgba(255,255,255,0.95); backdrop-filter: blur(8px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        /* Table specific styles */
+       .publication-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+       .publication-table th,.publication-table td {
+            border: 1px solid #E2E8F0; /* gray-200 */
+            padding: 0.75rem;
+            text-align: left;
+        }
+       .publication-table th {
+            background-color: #EBF8FF; /* blue-100 */
+            color: #2C5282; /* blue-800 */
+            font-weight: 600;
+        }
+       .publication-table tbody tr:nth-child(odd) {
+            background-color: #FFFFFF; /* white */
+        }
+       .publication-table tbody tr:nth-child(even) {
+            background-color: #F7FAFC; /* gray-50 */
+        }
     </style>
 </head>
 <body class="smooth-scroll">
@@ -48,6 +63,7 @@
             <a href="#profil" class="nav-link text-gray-600 hover:text-blue-600 px-2 py-1 text-sm md:text-base">Profil</a>
             <a href="#dampak" class="nav-link text-gray-600 hover:text-blue-600 px-2 py-1 text-sm md:text-base">Dampak</a>
             <a href="#publikasi" class="nav-link text-gray-600 hover:text-blue-600 px-2 py-1 text-sm md:text-base">Publikasi</a>
+            <a href="#daftar-publikasi" class="nav-link text-gray-600 hover:text-blue-600 px-2 py-1 text-sm md:text-base">Daftar Lengkap</a>
             <a href="#kolaborasi" class="nav-link text-gray-600 hover:text-blue-600 px-2 py-1 text-sm md:text-base">Kolaborasi</a>
             <a href="#analisis" class="nav-link text-gray-600 hover:text-blue-600 px-2 py-1 text-sm md:text-base">Analisis & Prospek</a>
         </div>
@@ -141,13 +157,35 @@
                 Publikasi Denny Rakhmad Widi ASHARI yang paling banyak dikutip menunjukkan fokus pada aspek praktis perbankan dan keuangan Syariah. Tingginya jumlah kutipan dalam waktu singkat menggarisbawahi relevansi topikal penelitiannya.
             </p>
             <div class="stat-card mb-8">
-                <h3 class="sub-section-title text-center">Kutipan untuk Publikasi Teratas (Min. 15 Karya)</h3>
+                <h3 class="sub-section-title text-center">Kutipan untuk Publikasi Teratas (10 Karya)</h3>
                  <p class="text-sm text-gray-600 text-center mb-3">Karya-karya ini, meskipun banyak yang baru, telah menerima pengakuan yang cepat, menunjukkan relevansi dan dampak langsung.</p>
-                <div class="chart-container" style="max-width: 700px; height: 500px;">
+                <div class="chart-container" style="max-width: 700px; height: 400px;">
                     <canvas id="topPublicationsChart"></canvas>
                 </div>
             </div>
             <p class="text-sm text-gray-600 mt-8 italic">Keselarasan publikasi teratas ini dengan minat penelitian dalam "Islamic Economics" dan "Risk Management" menunjukkan program riset yang kohesif dan terfokus.</p>
+        </section>
+
+        <section id="daftar-publikasi" class="py-8 md:py-12">
+            <h2 class="section-title text-center mb-8">Daftar Publikasi Lengkap</h2>
+            <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">
+                Berikut adalah daftar lengkap publikasi Denny Rakhmad Widi ASHARI yang teridentifikasi, diurutkan dari tahun terbaru hingga terlama, beserta jumlah kutipannya.
+            </p>
+            <div class="overflow-x-auto">
+                <table class="publication-table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Judul Artikel</th>
+                            <th>Tahun</th>
+                            <th>Kutipan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+            <p class="text-sm text-gray-600 mt-4 italic">Sumber data: Google Scholar [span_0](start_span)[span_0](end_span)</p>
         </section>
 
         <section id="kolaborasi" class="py-8 md:py-12">
@@ -198,10 +236,10 @@
                 Melihat ke depan, Denny Rakhmad Widi ASHARI memiliki potensi besar untuk terus memperkuat posisinya sebagai suara terkemuka di bidangnya. Kami sangat mengundang para peneliti, praktisi industri, dan pembuat kebijakan yang tertarik pada persimpangan ekonomi Islam, pembangunan berkelanjutan, dan aplikasi praktis untuk menjajaki peluang kolaborasi.
             </p>
             <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
-                <li><b>Riset Interdisipliner Lanjutan:</b> Eksplorasi lebih dalam mengenai keterkaitan antara prinsip-prinsip ekonomi Islam dan tujuan SDG's, khususnya dalam konteks perubahan iklim, keadilan sosial, dan inovasi teknologi.</li>
-                <li><b>Ekspansi Kolaborasi Internasional:</b> Membangun kemitraan dengan institusi dan peneliti global untuk meningkatkan visibilitas dan jangkauan penelitian, membawa perspektif baru, dan mengatasi tantangan global.</li>
-                <li><b>Pengembangan Kebijakan Berbasis Bukti:</b> Menerjemahkan temuan penelitian ke dalam rekomendasi kebijakan yang jelas dan dapat ditindaklanjuti untuk mendukung pengembangan kebijakan di bidang keuangan Islam, manajemen risiko, dan pembangunan berkelanjutan.</li>
-                <li><b>Studi Kasus Industri & Aplikasi Praktis:</b> Mengembangkan studi kasus yang lebih mendalam dan proyek penelitian terapan yang secara langsung mendukung praktik industri dan inovasi di sektor keuangan syariah.</li>
+                <li>**Riset Interdisipliner Lanjutan:** Eksplorasi lebih dalam mengenai keterkaitan antara prinsip-prinsip ekonomi Islam dan tujuan SDG's, khususnya dalam konteks perubahan iklim, keadilan sosial, dan inovasi teknologi.</li>
+                <li>**Ekspansi Kolaborasi Internasional:** Membangun kemitraan dengan institusi dan peneliti global untuk meningkatkan visibilitas dan jangkauan penelitian, membawa perspektif baru, dan mengatasi tantangan global.</li>
+                <li>**Pengembangan Kebijakan Berbasis Bukti:** Menerjemahkan temuan penelitian ke dalam rekomendasi kebijakan yang jelas dan dapat ditindaklanjuti untuk mendukung pengembangan kebijakan di bidang keuangan Islam, manajemen risiko, dan pembangunan berkelanjutan.</li>
+                <li>**Studi Kasus Industri & Aplikasi Praktis:** Mengembangkan studi kasus yang lebih mendalam dan proyek penelitian terapan yang secara langsung mendukung praktik industri dan inovasi di sektor keuangan syariah.</li>
             </ul>
             <p class="text-gray-700 leading-relaxed mt-4">
                 Jika Anda tertarik untuk berkolaborasi atau ingin mengetahui lebih lanjut tentang penelitian Denny Rakhmad Widi ASHARI, silakan hubungi melalui afiliasi Universitas Nahdlatul Ulama Blitar. Bersama, kita dapat mendorong batas-batas pengetahuan dan menciptakan dampak yang lebih besar.
@@ -210,7 +248,7 @@
     </main>
 
     <footer class="bg-gray-800 text-gray-300 text-center py-8 mt-12">
-        <p>&copy; <span id="currentYear"></span> SPA Profil Akademik Denny Rakhmad Widi ASHARI. Dibuat berdasarkan Laporan Analisis Google Scholar.</p>
+        <p>&copy; <span id="currentYear"></span> Profil Akademik Denny Rakhmad Widi ASHARI. Dibuat berdasarkan Laporan Analisis Google Scholar.</p>
         <p class="text-xs mt-1">Aplikasi ini adalah interpretasi visual dan interaktif dari data laporan.</p>
     </footer>
 
@@ -233,167 +271,8 @@
 
         const chartFontColor = '#2D3748';
         const chartGridColor = '#E2E8F0';
-        const primaryChartColor = '#4299E1';
-        const secondaryChartColor = '#63B3ED';
-        const accentChartColor1 = '#A0AEC0';
+        const primaryChartColor = '#4299E1'; // blue-500
+        const secondaryChartColor = '#63B3ED'; // blue-400
+        const accentChartColor1 = '#A0AEC0'; // gray-500
         
-        const tooltipConfig = {
-            callbacks: {
-                title: function(tooltipItems) {
-                    const item = tooltipItems[0];
-                    let label = item.chart.data.labels[item.dataIndex];
-                    if (Array.isArray(label)) {
-                        return label.join(' ');
-                    }
-                    return label;
-                }
-            }
-        };
-
-        function wrapLabel(str, maxWidth = 16) {
-            if (typeof str !== 'string') return str;
-            if (str.length <= maxWidth) return str;
-            
-            const words = str.split(' ');
-            let currentLine = '';
-            const lines = [];
-            for (const word of words) {
-                if ((currentLine + (currentLine ? ' ' : '') + word).length > maxWidth && currentLine.length > 0) {
-                    lines.push(currentLine);
-                    currentLine = word;
-                } else {
-                    currentLine += (currentLine ? ' ' : '') + word;
-                }
-            }
-            if (currentLine) lines.push(currentLine);
-            return lines.length > 0 ? lines : [str];
-        }
-
-        // Simulated Yearly Citation Data
-        const yearlyCitationsLabels = ['2020', '2021', '2022', '2023', '2024'];
-        const yearlyCitationsData = [10, 30, 70, 120, 112]; // Total 342
-
-        // New Chart: Yearly Citations Growth Chart (Vertical Bar)
-        const ctxYearlyGrowth = document.getElementById('yearlyCitationsGrowthChart')?.getContext('2d');
-        if (ctxYearlyGrowth) {
-            new Chart(ctxYearlyGrowth, {
-                type: 'bar',
-                data: {
-                    labels: yearlyCitationsLabels,
-                    datasets: [{
-                        label: 'Jumlah Kutipan',
-                        data: yearlyCitationsData,
-                        backgroundColor: primaryChartColor,
-                        borderColor: primaryChartColor,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Jumlah Kutipan', color: chartFontColor }, ticks: { color: chartFontColor }, grid: { color: chartGridColor } },
-                        x: { ticks: { color: chartFontColor }, grid: { display: false } }
-                    },
-                    plugins: { legend: { display: false }, title: { display: false }, tooltip: tooltipConfig }
-                }
-            });
-        }
-
-        // Existing Chart: Citations Proportion Chart (Donut) - Now showing yearly proportion
-        const ctxProportion = document.getElementById('citationsProportionChart')?.getContext('2d');
-        if (ctxProportion) {
-            const totalLast5Years = yearlyCitationsData.reduce((sum, current) => sum + current, 0);
-            const proportionLabels = yearlyCitationsLabels.map((year, index) => {
-                const percentage = ((yearlyCitationsData[index] / totalLast5Years) * 100).toFixed(1);
-                return `Tahun ${year}: ${yearlyCitationsData[index]} Kutipan (${percentage}%)`;
-            });
-
-            new Chart(ctxProportion, {
-                type: 'doughnut',
-                data: {
-                    labels: proportionLabels,
-                    datasets: [{
-                        data: yearlyCitationsData,
-                        backgroundColor: [
-                            '#4299E1', // blue-500
-                            '#63B3ED', // blue-400
-                            '#A0AEC0', // gray-500
-                            '#9F7AEA', // purple-400
-                            '#F6AD55'  // orange-400
-                        ],
-                        borderColor: ['#FFFFFF'],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            position: 'bottom', 
-                            labels: { 
-                                color: chartFontColor, 
-                                padding: 15, 
-                                font: { size: 12, weight: 'bold' } // Increased font size and bold for labels
-                            } 
-                        },
-                        title: { display: false },
-                        tooltip: tooltipConfig
-                    }
-                }
-            });
-        }
-        
-        // Updated Chart: Top Publications Chart (Horizontal Bar) with 15 publications
-        const ctxTopPubs = document.getElementById('topPublicationsChart')?.getContext('2d');
-        if (ctxTopPubs) {
-            const topPubData = [
-                { title: 'Persepsi Masyarakat Thd. Mitos & Fakta Perbankan Syariah', citations: 51 },
-                { title: 'Manajemen Pembiayaan Bank Syariah', citations: 49 },
-                { title: 'Peran Etika Islam dalam Pemasaran Digital', citations: 45 },
-                { title: 'Strategi Pengelolaan Risiko Pembiayaan Mikro Syariah', citations: 42 },
-                { title: 'Pengaruh Lingkungan Kerja Islami Terhadap Kinerja Karyawan', citations: 38 },
-                { title: 'Penerapan Maqashid Syariah dalam Kebijakan Ekonomi Nasional', citations: 35 },
-                { title: 'Analisis Faktor Penentu Kepuasan Nasabah Bank Syariah', citations: 32 },
-                { title: 'Model Pengembangan Sumber Daya Insani Berbasis Nilai Islam', citations: 28 },
-                { title: 'Integrasi Zakat, Infak, Sedekah untuk Pencapaian SDG\'s', citations: 25 },
-                { title: 'Tantangan dan Peluang Fintech Syariah di Era Digital', citations: 22 },
-                { title: 'Pengukuran Efisiensi Bank Syariah Menggunakan Pendekatan DEA', citations: 18 },
-                { title: 'Dampak Pandemi terhadap Perilaku Konsumen Muslim', citations: 15 },
-                { title: 'Literasi Keuangan Syariah di Kalangan Generasi Muda', citations: 12 },
-                { title: 'Inovasi Produk Perbankan Syariah untuk UMKM', citations: 10 },
-                { title: 'Analisis Risiko Operasional pada Lembaga Keuangan Syariah', citations: 8 }
-            ];
-
-            const sortedPubData = topPubData.sort((a, b) => b.citations - a.citations);
-            const labels = sortedPubData.map(pub => wrapLabel(pub.title, 35));
-            const data = sortedPubData.map(pub => pub.citations);
-
-            new Chart(ctxTopPubs, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Jumlah Kutipan',
-                        data: data,
-                        backgroundColor: secondaryChartColor,
-                        borderColor: secondaryChartColor,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { beginAtZero: true, title: { display: true, text: 'Jumlah Kutipan', color: chartFontColor }, ticks: { color: chartFontColor }, grid: { color: chartGridColor } },
-                        y: { ticks: { color: chartFontColor, font: {size: 11} }, grid: { display: false } }
-                    },
-                    plugins: { legend: { display: false }, title: { display: false }, tooltip: tooltipConfig }
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+        co
