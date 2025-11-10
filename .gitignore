@@ -1,0 +1,8 @@
+# Mengabaikan file lock spesifik platform
+Gemfile.lock
+
+# Mengabaikan folder hasil build Jekyll
+_site/
+
+# File sistem
+.DS_Store
