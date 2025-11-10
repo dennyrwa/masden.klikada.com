@@ -13,30 +13,27 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Mengambil kode Anda
+        uses: actions/checkout@v4
         
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' 
-          bundler-cache: false 
-      
-      # ----- LANGKAH BARU YANG KITA TAMBAHKAN -----
-      - name: Install libvips (dependency for jekyll-responsive-image)
-        run: sudo apt-get update && sudo apt-get install -y libvips
-      # -----------------------------------------------
+          ruby-version: '3.1'
+          bundler-cache: true # <-- Kembalikan ke 'true'
+
+      # ----- LANGKAH PERBAIKAN (V22) -----
+      - name: Install ImageMagick (dependency for RMagick)
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+      # ------------------------------------
           
-      - name: Install dependencies (with verbose logging)
-        run: bundle install --verbose
+      - name: Install dependencies
+        run: bundle install # <-- Hapus '--verbose'
         
       - name: Build the site
         run: bundle exec jekyll build
-        # Ini adalah langkah di mana 'jekyll-responsive-image' akan bekerja
-        # mengoptimasi semua gambar Anda
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site # Folder hasil 'build' Jekyll
-          # Tindakan ini akan secara otomatis men-deploy ke branch 'gh-pages'
+          publish_dir: ./_site
