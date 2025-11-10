@@ -18,8 +18,13 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.1' # Versi Ruby yang stabil
-          bundler-cache: true # Meng-cache 'gem' agar build lebih cepat
+          ruby-version: '3.1' 
+          bundler-cache: true 
+      
+      # ----- LANGKAH BARU YANG KITA TAMBAHKAN -----
+      - name: Install libvips (dependency for jekyll-responsive-image)
+        run: sudo apt-get update && sudo apt-get install -y libvips
+      # -----------------------------------------------
           
       - name: Install dependencies
         run: bundle install
