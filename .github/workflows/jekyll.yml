@@ -19,7 +19,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1' 
-          bundler-cache: true 
+          bundler-cache: false 
       
       # ----- LANGKAH BARU YANG KITA TAMBAHKAN -----
       - name: Install libvips (dependency for jekyll-responsive-image)
