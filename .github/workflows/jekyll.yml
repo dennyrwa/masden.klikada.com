@@ -19,15 +19,13 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-          bundler-cache: true # <-- Kembalikan ke 'true'
-
-      # ----- LANGKAH PERBAIKAN (V22) -----
+          bundler-cache: false # <--- KRUSIAL: Dinonaktifkan (lagi) untuk build bersih
+          
       - name: Install ImageMagick (dependency for RMagick)
         run: sudo apt-get update && sudo apt-get install -y imagemagick
-      # ------------------------------------
           
       - name: Install dependencies
-        run: bundle install # <-- Hapus '--verbose'
+        run: bundle install # <-- Dijalankan tanpa cache
         
       - name: Build the site
         run: bundle exec jekyll build
