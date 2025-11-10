@@ -1,0 +1,23 @@
+<div class="post-meta">
+  <span class="meta-item">
+    <i class="fas fa-user"></i>
+    {% if page.author %}{{ page.author }}{% else %}{{ site.author.name }}{% endif %}
+  </span>
+  <span class="meta-item">
+    <i class="fas fa-calendar-alt"></i>
+    <time datetime="{{ page.date | date_to_xmlschema }}">
+      {{ page.date | date: "%d %B %Y" }}
+    </time>
+  </span>
+  
+  {% assign word_count = page.content | number_of_words %}
+  <span class="meta-item">
+    <i class="fas fa-file-word"></i>
+    {{ word_count }} Kata
+  </span>
+  <span class="meta-item">
+    <i class="fas fa-clock"></i>
+    {% assign read_time = word_count | divided_by: 200 | round %}
+    {% if read_time < 1 %}1{% else %}{{ read_time }}{% endif %} Menit Baca
+  </span>
+</div>

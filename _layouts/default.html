@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'id' }}">
+
+  {% include head.html %}
+
+  <body class"{{ page.body_class }}"> {% include header.html %}
+
+    <main class="main-content">
+      {{ content }}
+    </main>
+
+    {% include footer.html %}
+
+    {% include wa-floating-button.html %}
+
+    <div id="search-overlay" class="search-overlay">
+      </div>
+
+  </body>
+</html>

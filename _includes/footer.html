@@ -1,0 +1,32 @@
+<footer class="site-footer">
+  <div class="container">
+    
+    <div class="footer-col">
+      <h5>Navigasi</h5>
+      <ul>
+        <li><a href="{{ '/about' | absolute_url }}">Tentang Saya</a></li>
+        <li><a href="{{ '/cv' | absolute_url }}">CV & Pengajaran</a></li>
+        <li><a href="{{ '/karya' | absolute_url }}">Karya</a></li>
+        <li><a href="{{ '/blog' | absolute_url }}">Blog/Info</a></li>
+        <li><a href="{{ '/kontak' | absolute_url }}">Kontak</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-col">
+      <h5>Akademik & Sosial</h5>
+      <ul>
+        <li><a href="{{ site.socials.google_scholar }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-graduation-cap"></i> Google Scholar</a></li>
+        <li><a href="{{ site.socials.sinta }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-book"></i> Sinta</a></li>
+        <li><a href="{{ site.socials.orcid }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-orcid"></i> ORCID</a></li>
+        <li><a href="{{ site.socials.linkedin }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+      </ul>
+    </div>
+    
+    <div class="footer-col">
+      <h5>Hak Cipta</h5>
+      <p>&copy; {% assign current_year = 'now' | date: '%Y' %}{{ current_year }} {{ site.author.name }}.</p>
+      <p>Dibuat dengan Jekyll & GitHub.</p>
+    </div>
+    
+  </div>
+</footer>

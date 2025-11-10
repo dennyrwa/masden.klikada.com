@@ -1,0 +1,48 @@
+---
+layout: default
+---
+
+<article class="book-detail-container">
+
+  <header class="book-header">
+    <div class="book-cover">
+      {% if page.cover_image %}
+        {% responsive_image path: page.cover_image alt: page.title %}
+      {% else %}
+        <div class="cover-placeholder">
+          <span>{{ page.title }}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="book-info">
+      <h1>{{ page.title }}</h1>
+      <p class="book-authors"><strong>Penulis:</strong> {{ page.penulis }}</p>
+      <hr>
+      
+      <ul class="book-meta">
+        <li><strong>Tahun:</strong> {{ page.tahun }}</li>
+        <li><strong>Penerbit:</strong> {{ page.penerbit }}</li>
+        <li><strong>Tempat Terbit:</strong> {{ page.tempat_terbit | default: "N/A" }}</li>
+        <li><strong>ISBN:</strong> {{ page.isbn | default: "N/A" }}</li>
+      </ul>
+      
+      <div class="book-actions">
+        {% include book-whatsapp-button.html %}
+        <button class="btn-copy" data-clipboard-text="{{ page.citation_apa7 }}">
+          <i class="fas fa-copy"></i> Salin Sitasi APA7
+        </button>
+        <button class="btn-copy" data-clipboard-text="{{ page.citation_bibtex }}">
+          <i class="fas fa-file-code"></i> Salin BibTeX
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="book-content">
+    <h2>Sinopsis</h2>
+    <div class="sinopsis-content">
+      {{ content }} </div>
+  </section>
+
+</article>

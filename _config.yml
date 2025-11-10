@@ -1,0 +1,60 @@
+# --- Data Situs ---
+title: "Denny Rakhmad Widi Ashari, S.AP., M.E."
+description: "Dosen dan Peneliti Perbankan Syariah, Fakultas Agama Islam, Universitas Nahdlatul Ulama Blitar."
+baseurl: "masden.klikada.com"
+url: "https://masden.klikada.com" # (URL Personal Website Anda)
+default_image: "/assets/images/profile.webp"
+default_blog_image: "/assets/images/default-blog.webp" # (Gambar default untuk blog)
+
+# --- Data Penulis & Kontak ---
+author:
+  name: "Denny Rakhmad Widi Ashari, S.AP., M.E."
+  kampus: "Prodi Perbankan Syariah, Fakultas Agama Islam, Nahdlatul Ulama University of Blitar, Indonesia"
+email_kampus: "drwashari@unublitar.ac.id"
+email_pribadi: "masden@klikada.com"
+telepon: "+6282232267100" # (Digunakan untuk Tombol WA)
+twitter: "dennyrwa" # (Misal: dennyrwa)
+
+# --- Tautan Akademik & Sosial ---
+socials:
+  linkedin: "https://www.linkedin.com/in/dennyrwa"
+  google_scholar: "https://scholar.google.com/citations?user=36C13s4AAAAJ&hl=id&oi=ao"
+  sinta: "https://sinta.kemdikbud.go.id/authors/profile/6802917"
+  orcid: "https://orcid.org/0000-0003-2251-6393"
+  github: "dennyrwa" # (PENTING: Isi username GitHub Anda)
+
+# --- Konfigurasi Koleksi (Collections) ---
+collections:
+  books:
+    output: true
+    permalink: /karya/buku/:title/
+
+# --- Konfigurasi Giscus (Komentar Blog) ---
+giscus:
+  repo: "dennyrwa/masden.klikada.com" # (PENTING: Isi username/repo)
+  repo_id: "MDEwOlJlcG9zaXRvcnkzNTIyMTI3Njg=" # (PENTING: Dapatkan dari giscus.app)
+  category: "Discussions"
+  category_id: "DIC_kwDOFP5XIM4Cxiun" # (PENTING: Dapatkan dari giscus.app)
+
+# --- Verifikasi & Analytics ---
+verification:
+  google: "[PLACEHOLDER_GOOGLE_VERIFICATION_CODE]"
+  bing: "[PLACEHOLDER_BING_VERIFICATION_CODE]"
+google_analytics_id: "G-VDN3B5DX6R" # (ID Google Analytics 4)
+
+# --- Konfigurasi Plugin ---
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-responsive-image
+  - jekyll-toc # <--- AKTIFKAN PLUGIN
+
+# --- Konfigurasi Daftar Isi (TOC) ---
+toc:
+  min_level: 2 # Mulai dari H2
+  max_level: 3 # Sampai H3
+  list_class: "toc-list" # Kelas CSS untuk styling
+  sublist_class: "toc-sublist"
+  item_class: "toc-item"
+  link_class: "toc-link"

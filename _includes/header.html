@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="container">
+    <a href="{{ '/' | absolute_url }}" class="site-title">{{ site.title }}</a>
+    
+    <nav class="site-nav">
+      <ul>
+        <li><a href="{{ '/about' | absolute_url }}">Tentang Saya</a></li>
+        <li><a href="{{ '/cv' | absolute_url }}">CV & Pengajaran</a></li>
+        <li><a href="{{ '/karya' | absolute_url }}">Karya</a></li>
+        <li><a href="{{ '/blog' | absolute_url }}">Blog/Info</a></li>
+        <li><a href="{{ '/kontak' | absolute_url }}">Kontak</a></li>
+      </ul>
+    </nav>
+    
+    <div class="header-actions">
+      <button id="search-toggle" aria-label="Buka pencarian">
+        <i class="fas fa-search"></i>
+      </button>
+      
+      <button id="theme-toggle" aria-label="Ganti tema">
+        <i class="fas fa-moon"></i> </button>
+      
+      <div class="lang-switcher">
+        <a href="#" aria-label="Ubah ke Bahasa Indonesia" class="active">
+          <span class="fi fi-id"></span> <span class="lang-text">ID</span>
+        </a>
+        <a href="#" aria-label="Switch to English">
+          <span class="fi fi-gb"></span> <span class="lang-text">EN</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

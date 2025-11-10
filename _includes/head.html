@@ -1,0 +1,131 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% if page.title %}
+  {% assign page_title = page.title | escape %}
+{% else %}
+  {% assign page_title = site.title | escape %}
+{% endif %}
+
+{% if page.description %}
+  {% assign page_description = page.description | strip_html | normalize_whitespace | truncate: 160 %}
+{% else %}
+  {% assign page_description = site.description %}
+{% endif %}
+
+<title>{{ page_title }} | {{ site.title | escape }}</title>
+<meta name="description" content="{{ page_description }}">
+<link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description }}">
+<meta property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
+<meta property="og:site_name" content="{{ site.title | escape }}">
+{% if page.collection == 'posts' %}
+  <meta property="og:type" content="article">
+{% else %}
+  <meta property="og:type" content="website">
+{% endif %}
+
+{% comment %} Logika Gambar OG (V20) {% endcomment %}
+{% if page.image %}
+  {% assign og_image = page.image %}
+{% elsif page.cover_image %}
+  {% assign og_image = page.cover_image %}
+{% else %}
+  {% assign og_image = site.default_image %}
+{% endif %}
+<meta property="og:image" content="{{ og_image | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+{% if site.twitter %}
+  <meta name="twitter:creator" content="@{{ site.twitter }}">
+{% endif %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/css/flag-icons.min.css" integrity="sha512-EZEuYpayMgiNuIZdbTPOGUi+yZ5AiPGBtCJvN2X8DoaBlwESBTuP4vbwkKviNuG2fTMybIiNMlnwM2b2iP0MKA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | absolute_url }}">
+<script defer src="{{ '/assets/js/main.js' | absolute_url }}"></script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/favicon/apple-touch-icon.png' | absolute_url }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/favicon/favicon-32x32.png' | absolute_url }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/favicon/favicon-16x16.png' | absolute_url }}">
+<link rel="manifest" href="{{ '/assets/images/favicon/site.webmanifest' | absolute_url }}">
+<meta name="theme-color" content="#ffffff">
+<link rel="alternate" type="application/atom+xml" title="Feed" href="{{ '/feed.xml' | absolute_url }}">
+
+{% if site.google_analytics_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics_id }}');
+  </script>
+{% endif %}
+
+{% if site.verification.google %}
+  <meta name="google-site-verification" content="{{ site.verification.google }}">
+{% endif %}
+{% if site.verification.bing %}
+  <meta name="msvalidate.01" content="{{ site.verification.bing }}">
+{% endif %}
+
+{% if page.layout == 'post' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ page.title | escape }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ site.author.name }}"
+    },
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    {% if page.last_modified_at %}
+      "dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",
+    {% endif %}
+    "image": "{{ og_image | absolute_url }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ site.title }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ site.default_image | absolute_url }}"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ page.url | replace:'index.html','' | absolute_url }}"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.7",
+      "reviewCount": "130"
+    }
+  }
+  </script>
+{% elsif page.url == '/about/' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.url }}",
+    "image": "{{ site.default_image | absolute_url }}",
+    "sameAs": [
+      "{{ site.socials.linkedin }}",
+      "{{ site.socials.google_scholar }}",
+      "{{ site.socials.sinta }}",
+      "{{ site.socials.orcid }}",
+      "{{ site.socials.github }}"
+    ],
+    "jobTitle": "Dosen, Peneliti dan Web Developer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Universitas Nahdlatul Ulama Blitar"
+    }
+  }
+  </script>
+{% endif %}

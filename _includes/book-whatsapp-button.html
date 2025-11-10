@@ -1,0 +1,10 @@
+{% comment %}
+  File ini membuat pesan WA yang sudah diformat (di-URL-encode)
+  sesuai permintaan V21.
+{% endcomment %}
+
+{% assign wa_message = "Halo, saya tertarik untuk memesan buku berikut:%0A%0A" | append: "Judul: " | append: page.title | append: "%0A" | append: "ISBN: " | append: page.isbn | append: "%0A" | append: "Penerbit: " | append: page.penerbit | append: "%0A" | append: "Link: " | append: page.url | absolute_url %}
+
+<a href="https://wa.me/{{ site.telepon }}?text={{ wa_message }}" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+  <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
+</a>

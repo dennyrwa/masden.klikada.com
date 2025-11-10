@@ -1,0 +1,118 @@
+---
+layout: default
+---
+
+<div class="container page-container cv-page">
+  <article class="page-content">
+    
+    <header class="page-header cv-header">
+      <h1>{{ page.title }}</h1>
+      <button id="print-cv-btn" class="btn btn-secondary">
+        <i class="fas fa-download"></i> Unduh sebagai PDF
+      </button>
+    </header>
+    
+    <section id="pengalaman-kerja" class="cv-section">
+      <h2><i class="fas fa-briefcase"></i> Pengalaman Kerja</h2>
+      <div class="timeline">
+        {% for exp in site.data.pengalaman_kerja %}
+          <div class="timeline-item">
+            <div class="timeline-logo">
+              <img src="{{ exp.logo }}" alt="Logo {{ exp.perusahaan }}">
+            </div>
+            <div class="timeline-content">
+              <h3>{{ exp.perusahaan }}</h3>
+              <span class="timeline-duration-total">{{ exp.durasi_total }}</span>
+              <ul>
+                {% for pos in exp.posisi %}
+                  <li>
+                    <strong>{{ pos.jabatan }}</strong> ({{ pos.durasi }})
+                    {% if pos.deskripsi %}
+                      <p>{{ pos.deskripsi }}</p>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <section id="pendidikan" class="cv-section">
+      <h2><i class="fas fa-graduation-cap"></i> Pendidikan</h2>
+      <div class="timeline">
+        {% for edu in site.data.pendidikan %}
+          <div class="timeline-item">
+            <div class="timeline-logo">
+              <i class="fas fa-university fa-2x"></i> 
+            </div>
+            <div class="timeline-content">
+              <h3>{{ edu.instansi }}</h3>
+              <span class="timeline-duration-total">{{ edu.tahun }}</span>
+              <p><strong>{{ edu.gelar }}, {{ edu.jurusan }}</strong> (Nilai: {{ edu.nilai }})</p>
+              <ul>
+                {% for keg in edu.kegiatan %}
+                  <li>{{ keg }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <hr class="section-divider">
+    
+    <section id="pengalaman-sukarela" class="cv-section">
+      <h2><i class="fas fa-hands-helping"></i> Pengalaman Sukarela</h2>
+      <div class="timeline">
+        {% for vol in site.data.pengalaman_sukarela %}
+          <div class="timeline-item">
+            <div class="timeline-logo">
+              <img src="{{ vol.logo }}" alt="Logo {{ vol.organisasi }}">
+            </div>
+            <div class="timeline-content">
+              <h3>{{ vol.organisasi }}</h3>
+              <span class="timeline-duration-total">{{ vol.durasi }}</span>
+              <p><strong>{{ vol.peran }}</strong> (Bidang: {{ vol.bidang }})</p>
+              <p>{{ vol.deskripsi }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <section id="mata-kuliah" class="cv-section">
+      <h2><i class="fas fa-chalkboard-teacher"></i> Mata Kuliah Diampu</h2>
+      {% for semester in site.data.mata_kuliah %}
+        <h3 class="semester-title">Semester {{ semester.semester }}</h3>
+        <div class="table-responsive">
+          <table class="matkul-table">
+            <thead>
+              <tr>
+                <th>Nama Mata Kuliah</th>
+                <th>Kode Kelas</th>
+                <th>Nama Kelas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for matkul in semester.matkul %}
+                <tr>
+                  <td>{{ matkul.nama }}</td>
+                  <td>{{ matkul.kode }}</td>
+                  <td>{{ matkul.kelas }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    </section>
+
+  </article>
+</div>

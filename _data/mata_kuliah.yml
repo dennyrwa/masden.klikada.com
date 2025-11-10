@@ -1,0 +1,104 @@
+- semester: 2024/2025 Genap
+  matkul:
+    - nama: Studi Tafsir Ayat Ekonomi
+      kode: MKKPSY1918
+      kelas: C
+    - nama: Studi Hadist Ekonomi
+      kode: MKKPSY1919
+      kelas: C
+    - nama: Studi Ekonomi Islam
+      kode: MKKPSY1913
+      kelas: B
+    - nama: Manajemen Resiko Perbankan Syariah
+      kode: MKKPSY1950
+      kelas: A
+    - nama: Auditing Bank Syariah
+      kode: MKBPSY207
+      kelas: A
+    - nama: Aset Liabilitasi Manajemen Bank Syariah
+      kode: MKKPSY1949
+      kelas: A
+
+- semester: 2024/2025 Ganjil
+  matkul:
+    - nama: Pengantar Ekonomi Mikro
+      kode: MKKPSY1904
+      kelas: B
+    - nama: Metodologi Studi Islam
+      kode: MPBPSY1404
+      kelas: A
+    - nama: Manajemen data BMT
+      kode: MKPPSY1946
+      kelas: A
+    - nama: Aspek Hukum Perbankan Syariah
+      kode: MKKPSY1941
+      kelas: A
+    - nama: Akhlak dan Tasawuf
+      kode: MPKFAI1906
+      kelas: A
+
+- semester: 2023/2024 Genap
+  matkul:
+    - nama: Skripsi
+      kode: MPBES224
+      kelas: 8
+    - nama: Sistem Ekonomi Indonesia
+      kode: MKBFAI202
+      kelas: 4A
+    - nama: Pengantar Ekonomi Makro
+      kode: MKKES305
+      kelas: 2A
+    - nama: Manajemen Resiko Perbankan Syariah
+      kode: MKKPSY1950
+      kelas: A
+    - nama: Etika Profesi
+      kode: MPBES304
+      kelas: 6A
+    - nama: Ekonomi Regional
+      kode: MKKES311
+      kelas: 2B
+    - nama: Auditing Bank Syariah
+      kode: MKBPSY207
+      kelas: A
+    - nama: Aset Liabilitasi Manajemen Bank Syariah
+      kode: MKKPSY1949
+      kelas: A
+
+- semester: 2023/2024 Ganjil
+  matkul:
+    - nama: Metodologi Studi Islam
+      kode: MPBPSY1404
+      kelas: A
+    - nama: Manajemen data BMT
+      kode: MKPPSY1946
+      kelas: A
+    - nama: Ekonomi Moneter
+      kode: MKKES310
+      kelas: 3A
+    - nama: Aspek Hukum Perbankan Syariah
+      kode: MKKPSY1941
+      kelas: A
+
+- semester: 2022/2023 Genap
+  matkul:
+    - nama: Manajemen Resiko Perbankan Syariah
+      kode: MKKPSY1950
+      kelas: 6A
+    - nama: Auditing Bank Syariah
+      kode: MKBPSY207
+      kelas: 6A
+    - nama: Aset Liabilitasi Manajemen Bank Syariah
+      kode: MKKPSY1949
+      kelas: 6A
+
+- semester: 2022/2023 Ganjil
+  matkul:
+    - nama: Metodologi Studi Islam
+      kode: MPBPSY1404
+      kelas: 3A
+    - nama: Manajemen data BMT
+      kode: MKPPSY1946
+      kelas: 5A
+    - nama: Aspek Hukum Perbankan Syariah
+      kode: MKKPSY1941
+      kelas: 5A

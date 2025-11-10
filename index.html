@@ -1,0 +1,28 @@
+---
+layout: default
+body_class: page-home
+---
+
+<section class="hero-fullscreen">
+  <div class="hero-content">
+    
+    <div class="hero-image">
+      {% responsive_image path: site.default_image alt: "Foto Profil Denny Rakhmad Widi Ashari" %}
+    </div>
+    
+    <div class="hero-text">
+      <h1>Halo, saya <span class="hero-name">{{ site.author.name }}</span></h1>
+      <p class="hero-subtitle">{{ site.description }}</p>
+      
+      <div class="hero-actions">
+        <a href="{{ '/karya' | absolute_url }}" class="btn btn-primary">Lihat Karya</a>
+        <a href="{{ '/cv' | absolute_url }}" class="btn btn-secondary">Lihat CV</a>
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="scroll-indicator">
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>

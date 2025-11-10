@@ -1,0 +1,13 @@
+<nav class="breadcrumbs">
+  <div class="container">
+    <a href="{{ '/' | absolute_url }}">Beranda</a>
+    <span class="separator">&gt;</span>
+    {% if page.collection == 'posts' %}
+      <a href="{{ '/blog' | absolute_url }}">Blog</a>
+      <span class="separator">&gt;</span>
+      <span>{{ page.title }}</span>
+    {% else %}
+      <span>{{ page.title }}</span>
+    {% endif %}
+  </div>
+</nav>

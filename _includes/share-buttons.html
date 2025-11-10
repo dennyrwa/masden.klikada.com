@@ -1,0 +1,18 @@
+<div class="share-buttons">
+  <h4>Bagikan Artikel Ini:</h4>
+  {% assign post_url = page.url | absolute_url %}
+  {% assign post_title = page.title | url_encode %}
+  
+  <a href="https://api.whatsapp.com/send?text={{ post_title | append: ': ' | append: post_url }}" target="_blank" rel="noopener noreferrer" class="share-btn whatsapp" aria-label="Bagikan ke WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{ post_url }}" target="_blank" rel="noopener noreferrer" class="share-btn facebook" aria-label="Bagikan ke Facebook">
+    <i class="fab fa-facebook-f"></i>
+  </a>
+  <a href="https://twitter.com/intent/tweet?text={{ post_title }}&url={{ post_url }}" target="_blank" rel="noopener noreferrer" class="share-btn twitter" aria-label="Bagikan ke Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ post_url }}&title={{ post_title }}" target="_blank" rel="noopener noreferrer" class="share-btn linkedin" aria-label="Bagikan ke LinkedIn">
+    <i class="fab fa-linkedin-in"></i>
+  </a>
+</div>

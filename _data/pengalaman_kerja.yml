@@ -1,0 +1,61 @@
+- perusahaan: klikada.com
+  logo: /assets/images/logos/klikada.png # (Placeholder path)
+  durasi_total: 10 thn 10 bln
+  posisi:
+    - jabatan: Web Engineer
+      durasi: Mar 2018 - Sekarang (7 thn 9 bln)
+      lokasi: Tulungagung, Jawa Timur, Indonesia
+    - jabatan: Chief Technology Officer
+      durasi: Agu 2019 - Sep 2022 (3 thn 2 bln)
+      lokasi: Tulungagung, Jawa Timur, Indonesia
+    - jabatan: Frontend Web Developer
+      durasi: Feb 2015 - Mar 2018 (3 thn 2 bln)
+      lokasi: Indonesia
+
+- perusahaan: Universitas Nahdlatul Ulama Blitar
+  logo: /assets/images/logos/unublitar.png # (Placeholder path)
+  durasi_total: 6 thn 9 bln
+  posisi:
+    - jabatan: Lecturer
+      durasi: Mar 2019 - Sekarang (6 thn 9 bln)
+      lokasi: Blitar, Jawa Timur, Indonesia
+
+- perusahaan: PT Bank Muamalat Indonesia Tbk
+  logo: /assets/images/logos/muamalat.png # (Placeholder path)
+  durasi_total: 5 thn 3 bln
+  posisi:
+    - jabatan: Relationship Manager
+      durasi: Des 2010 - Jan 2015 (4 thn 2 bln)
+    - jabatan: Assistance Account Manager
+      durasi: Nov 2009 - Des 2010 (1 thn 2 bln)
+      lokasi: Indonesia
+
+- perusahaan: Sampoerna Strategic
+  logo: /assets/images/logos/sampoerna.png # (Placeholder path)
+  durasi_total: 7 bln
+  posisi:
+    - jabatan: Finance Specialist
+      durasi: Jun 2009 - Nov 2009 (6 bln)
+      deskripsi: Fokus pada pembiayaan sektor mikro, dengan metode program seperti Grameen Bank.
+    - jabatan: Project Developer
+      durasi: Mei 2009 - Jun 2009 (2 bln)
+      deskripsi: Mempersiapkan semua peralatan untuk program pemberdayaan masyarakat.
+
+- perusahaan: PT Bank Danamon Indonesia, Tbk.
+  logo: /assets/images/logos/danamon.png # (Placeholder path)
+  durasi_total: 2 thn 2 bln
+  posisi:
+    - jabatan: Maintenance Officer
+      durasi: Des 2008 - Jun 2009 (7 bln)
+    - jabatan: Sales Support Officer
+      durasi: Des 2007 - Des 2008 (1 thn 1 bln)
+    - jabatan: Relationship Officer
+      durasi: Mei 2007 - Des 2007 (8 bln)
+
+- perusahaan: PT. Millennium Penata Futures
+  logo: /assets/images/logos/millennium.png # (Placeholder path)
+  durasi_total: 4 bln
+  posisi:
+    - jabatan: Assistant Manager
+      durasi: Feb 2007 - Mei 2007 (4 bln)
+      deskripsi: Maintenance account and trader in Index Kospi.

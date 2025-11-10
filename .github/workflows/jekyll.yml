@@ -1,0 +1,37 @@
+# Nama alur kerja
+name: Build and Deploy Jekyll Site to GitHub Pages
+
+on:
+  # Memicu alur kerja saat ada 'push' ke branch 'main'
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Mengambil kode Anda
+        
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' # Versi Ruby yang stabil
+          bundler-cache: true # Meng-cache 'gem' agar build lebih cepat
+          
+      - name: Install dependencies
+        run: bundle install
+        
+      - name: Build the site
+        run: bundle exec jekyll build
+        # Ini adalah langkah di mana 'jekyll-responsive-image' akan bekerja
+        # mengoptimasi semua gambar Anda
+        
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site # Folder hasil 'build' Jekyll
+          # Tindakan ini akan secara otomatis men-deploy ke branch 'gh-pages'
