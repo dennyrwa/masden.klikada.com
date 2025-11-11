@@ -11,7 +11,7 @@ permalink: /blog/
         
         <a href="{{ post.url | absolute_url }}" class="post-card-image">
           {% assign img_path = post.image | default: site.default_blog_image %}
-          {% responsive_image path: img_path alt: post.title %}
+          <img src="{{ img_path | absolute_url }}" alt="{{ post.title }}">
         </a>
         
         <div class="post-card-content">

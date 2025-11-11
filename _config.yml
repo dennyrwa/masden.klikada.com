@@ -27,7 +27,7 @@ socials:
 collections:
   books:
     output: true
-    permalink: /karya/buku/:title/
+    permalink: /karya/buku/:title/  
 
 # --- Konfigurasi Giscus (Komentar Blog) ---
 giscus:
@@ -47,8 +47,8 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
-  - jekyll-responsive-image
-  - jekyll-toc # <--- AKTIFKAN PLUGIN
+  # baris jekyll-responsive-image DIHAPUS
+  - jekyll-toc
 
 # --- Konfigurasi Daftar Isi (TOC) ---
 toc:

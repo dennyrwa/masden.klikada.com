@@ -14,7 +14,7 @@ layout: default
 
     <figure class="featured-image">
       {% assign img_path = page.image | default: site.default_blog_image %}
-      {% responsive_image path: img_path alt: page.title %}
+      <img src="{{ img_path | absolute_url }}" alt="{{ page.title }}">
     </figure>
 
     <section class="table-of-contents">

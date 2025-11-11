@@ -1,8 +1,6 @@
-# Nama alur kerja
 name: Build and Deploy Jekyll Site to GitHub Pages
 
 on:
-  # Memicu alur kerja saat ada 'push' ke branch 'main'
   push:
     branches:
       - main
@@ -19,13 +17,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
-          bundler-cache: false # <--- KRUSIAL: Dinonaktifkan (lagi) untuk build bersih
-          
-      - name: Install ImageMagick (dependency for RMagick)
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
+          bundler-cache: true # Kita kembalikan ke 'true'
+
+      # Langkah ImageMagick DIHAPUS
           
       - name: Install dependencies
-        run: bundle install # <-- Dijalankan tanpa cache
+        run: bundle install # Sekarang akan sangat cepat
         
       - name: Build the site
         run: bundle exec jekyll build
