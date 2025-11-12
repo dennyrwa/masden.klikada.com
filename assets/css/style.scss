@@ -994,3 +994,150 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0.8;
   }
 }
+
+// -----------------------------------------------------------------------------
+// FASE 10: CSS RESPONSIF (MEDIA QUERIES)
+// Target: Layar 768px ke bawah (Tablet & Mobile)
+// -----------------------------------------------------------------------------
+@media (max-width: 768px) {
+
+  // --- 1. Global & Header ---
+  .container {
+    padding: 0 15px; // Kurangi padding di mobile
+  }
+
+  // Membuat header menjadi vertikal di mobile
+  .site-header {
+    height: auto; // Biarkan tinggi header otomatis
+    position: static; // Hapus 'sticky' di mobile agar tidak mengganggu
+    
+    .container {
+      flex-direction: column; // Susun header secara vertikal
+      padding: 15px 0;
+    }
+    
+    .site-nav {
+      width: 100%;
+      margin-top: 15px;
+      border-top: 1px solid var(--color-border);
+      padding-top: 15px;
+      
+      ul {
+        flex-wrap: wrap; // Biarkan link-nya pindah baris
+        justify-content: center;
+        gap: 10px 15px; // Spasi antar link
+      }
+    }
+
+    .header-actions {
+      margin-top: 15px;
+    }
+  }
+  
+  // --- 2. Halaman Beranda (Hero) ---
+  .hero-fullscreen {
+    height: auto; // Hapus 'full-screen' di mobile
+    // Tinggi minimal agar tetap terasa 'hero'
+    min-height: calc(100vh - 100px); 
+    padding: 40px 15px; // Beri padding
+  }
+  
+  .hero-content {
+    flex-direction: column; // Susun 2-kolom (foto + teks) jadi 1-kolom
+    text-align: center; // Tengahkan teks
+  }
+  
+  .hero-image img {
+    width: 180px; // Kecilkan foto profil di mobile
+    height: 180px;
+    margin-bottom: 10px;
+  }
+  
+  .hero-text h1 {
+    font-size: 2rem; // Kecilkan font judul
+  }
+  
+  .hero-text .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .hero-actions {
+    justify-content: center; // Tengahkan tombol
+  }
+  
+  .scroll-indicator {
+    display: none; // Sembunyikan panah scroll di mobile
+  }
+
+  // --- 3. Halaman Global (Judul Halaman) ---
+  .page-header h1, .post-header h1 {
+    font-size: 2.2rem; // Kecilkan judul halaman
+  }
+
+  // --- 4. Halaman CV & Karya (Header Halaman) ---
+  .cv-header {
+    flex-direction: column; // Susun tombol "Unduh PDF" ke bawah
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  // --- 5. Penanganan Tabel Responsif (CV & Karya) ---
+  // Ini adalah solusi terbaik: membuat tabel bisa di-scroll horizontal
+  // di perangkat mobile (Sesuai V18)
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; // Scrolling halus di iOS
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+  }
+  
+  // Paksa tabel agar tetap lebar, sehingga memicu scroll
+  .matkul-table, .karya-table, .hki-table {
+     min-width: 650px; 
+  }
+
+  // --- 6. Halaman Karya ---
+  .book-gallery {
+    // Tampilkan 2 kolom kartu buku di mobile
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  .karya-controls {
+    flex-direction: column; // Susun filter
+    align-items: stretch;
+    
+    .control-group {
+      justify-content: space-between;
+    }
+  }
+
+  // --- 7. Halaman Postingan ---
+  .post-meta {
+    gap: 10px 15px; // 'flex-wrap' (dari Fase 7) akan otomatis menangani ini
+  }
+  
+  .share-buttons {
+    text-align: center;
+  }
+  
+  .post-content {
+    max-width: 100%; // Gunakan lebar penuh
+  }
+
+  // --- 8. Footer ---
+  .site-footer .container {
+    grid-template-columns: 1fr; // Susun 3-kolom footer jadi 1-kolom
+    text-align: center;
+  }
+  
+  // --- 9. Tombol WA ---
+  .wa-floating-button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    bottom: 15px;
+    right: 15px;
+  }
+}
