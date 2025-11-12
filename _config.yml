@@ -1,7 +1,7 @@
 # --- Data Situs ---
 title: "Denny Rakhmad Widi Ashari, S.AP., M.E."
 description: "Dosen dan Peneliti Perbankan Syariah, Fakultas Agama Islam, Universitas Nahdlatul Ulama Blitar."
-baseurl: "masden.klikada.com"
+baseurl: ""
 url: "https://masden.klikada.com" # (URL Personal Website Anda)
 default_image: "/assets/images/profile.webp"
 default_blog_image: "/assets/images/default-blog.webp" # (Gambar default untuk blog)
@@ -32,9 +32,9 @@ collections:
 # --- Konfigurasi Giscus (Komentar Blog) ---
 giscus:
   repo: "dennyrwa/masden.klikada.com" # (PENTING: Isi username/repo)
-  repo_id: "MDEwOlJlcG9zaXRvcnkzNTIyMTI3Njg=" # (PENTING: Dapatkan dari giscus.app)
+  repo_id: "R_kgDOQSnsWg" # (PENTING: Dapatkan dari giscus.app)
   category: "Discussions"
-  category_id: "DIC_kwDOFP5XIM4Cxiun" # (PENTING: Dapatkan dari giscus.app)
+  category_id: "DIC_kwDOQSnsWs4Cxs5m" # (PENTING: Dapatkan dari giscus.app)
 
 # --- Verifikasi & Analytics ---
 verification:
