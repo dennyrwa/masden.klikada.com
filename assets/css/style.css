@@ -917,4 +917,107 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.8;
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  .site-header {
+    height: auto;
+    position: static;
+  }
+  .site-header .container {
+    flex-direction: column;
+    padding: 15px 0;
+  }
+  .site-header .site-nav {
+    width: 100%;
+    margin-top: 15px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 15px;
+  }
+  .site-header .site-nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 15px;
+  }
+  .site-header .header-actions {
+    margin-top: 15px;
+  }
+  .hero-fullscreen {
+    height: auto;
+    min-height: calc(100vh - 100px);
+    padding: 40px 15px;
+  }
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-image img {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 10px;
+  }
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+  .hero-text .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .scroll-indicator {
+    display: none;
+  }
+  .page-header h1, .post-header h1 {
+    font-size: 2.2rem;
+  }
+  .cv-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+  }
+  .matkul-table, .karya-table, .hki-table {
+    min-width: 650px;
+  }
+  .book-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  .karya-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .karya-controls .control-group {
+    justify-content: space-between;
+  }
+  .post-meta {
+    gap: 10px 15px;
+  }
+  .share-buttons {
+    text-align: center;
+  }
+  .post-content {
+    max-width: 100%;
+  }
+  .site-footer .container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .wa-floating-button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */
