@@ -1,0 +1,67 @@
+website-akademik/
+│
+├── .github/
+│   └── workflows/
+│       └── jekyll.yml            (File dari Fase 2b)
+│
+├── _data/
+│   ├── pendidikan.yml            (File dari Fase 1 - Revisi A)
+│   ├── pengalaman_kerja.yml      (File dari Fase 1 - Revisi A)
+│   ├── pengalaman_sukarela.yml   (File dari Fase 1 - Revisi A)
+│   ├── hki.yml                   (File dari Fase 1 - Revisi A)
+│   ├── mata_kuliah.yml           (File dari Fase 1 - Revisi A)
+│   └── publikasi.yml             (File dari Fase 2 - Revisi B)
+│
+├── _books/
+│   ├── dasar-dasar-auditing.md   (File dari Fase 2 - Revisi B)
+│   ├── manajemen-pembiayaan.md   (dan 12+ file buku lainnya...)
+│   └── ...
+│
+├── _includes/
+│   ├── head.html                 (File dari Fase 2c)
+│   ├── header.html               (File dari Fase 2c)
+│   ├── footer.html               (File dari Fase 2c)
+│   ├── wa-floating-button.html   (File dari Fase 2c)
+│   ├── book-whatsapp-button.html (File dari Fase 2 - Revisi B)
+│   ├── breadcrumbs.html          (File dari Fase 7c)
+│   ├── post-meta.html            (File dari Fase 7c)
+│   ├── share-buttons.html        (File dari Fase 7c)
+│   └── giscus.html               (File dari Fase 7c)
+│
+├── _layouts/
+│   ├── default.html              (File dari Fase 2c)
+│   ├── page.html                 (File dari Fase 4a)
+│   ├── cv.html                   (File dari Fase 5a)
+│   ├── karya.html                (File dari Fase 6a)
+│   ├── book.html                 (File dari Fase 2 - Revisi B)
+│   └── post.html                 (File dari Fase 7b)
+│
+├── _posts/
+│   └── 2025-11-10-selamat-datang.md (File dari Fase 7e)
+│
+├── admin/
+│   ├── index.html                (File dari Fase 9a)
+│   └── config.yml                (File dari Fase 9b)
+│
+├── assets/
+│   ├── css/
+│   │   └── style.scss            (File gabungan dari Fase 3, 4, 5, 6, 7, 8)
+│   ├── js/
+│   │   └── main.js               (File gabungan dari Fase 3, 5, 6, 7)
+│   └── images/
+│       ├── (profile.webp)        <- Bapak harus taruh foto profil di sini
+│       ├── (default-blog.webp)   <- Bapak harus taruh gambar default blog di sini
+│       ├── logos/                <- Bapak harus taruh logo (klikada, unu, dll) di sini
+│       └── covers/               <- Bapak harus taruh cover buku di sini
+│
+├── blog/
+│   └── index.html                (File dari Fase 7d)
+│
+├── _config.yml                   (File dari Fase 2 - Revisi A)
+├── 404.html                      (File dari Fase 8b)
+├── about.md                      (File dari Fase 4b)
+├── cv.md                         (File dari Fase 5b)
+├── index.html                    (File dari Fase 3a)
+├── karya.md                      (File dari Fase 6b)
+├── kontak.md                     (File dari Fase 8a)
+└── Gemfile                       (File dari Fase 7a)

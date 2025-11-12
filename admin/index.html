@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMS Admin - {{ site.title }}</title>
+  
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  
+  <style>
+    #decap-root {
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Tampilkan UI setelah dimuat
+    window.addEventListener('load', () => {
+      document.getElementById('decap-root').style.opacity = 1;
+    });
+  </script>
+</body>
+</html>
