@@ -8,6 +8,11 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+
+    # ----- TAMBAHKAN 2 BARIS INI -----
+    permissions:
+      contents: write 
+    # -----------------------------------
     
     steps:
       - name: Checkout code
