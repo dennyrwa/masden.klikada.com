@@ -38,7 +38,9 @@ layout: default
           <div class="post-categories">
             <strong>Kategori:</strong>
             {% for category in page.categories %}
-              <a href="{{ '/kategori/' | append: (category | slugify) | absolute_url }}">{{ category }}</a>
+              {% assign category_slug = category | slugify %}
+              {% assign category_url = '/kategori/' | append: category_slug %}
+              <a href="{{ category_url | absolute_url }}">{{ category }}</a>
             {% endfor %}
           </div>
         {% endif %}
@@ -46,7 +48,9 @@ layout: default
           <div class="post-tags">
             <strong>Tags:</strong>
             {% for tag in page.tags %}
-              <a href="{{ '/tag/' | append: (tag | slugify) | absolute_url }}">{{ tag }}</a>
+              {% assign tag_slug = tag | slugify %}
+              {% assign tag_url = '/tag/' | append: tag_slug %}
+              <a href="{{ tag_url | absolute_url }}">{{ tag }}</a>
             {% endfor %}
           </div>
         {% endif %}
