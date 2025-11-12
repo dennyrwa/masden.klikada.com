@@ -19,7 +19,7 @@ layout: default
           <a href="{{ book.url | absolute_url }}" class="book-card">
             <div class="book-card-cover">
               {% if book.cover_image %}
-                {% responsive_image path: book.cover_image alt: book.title %}
+                <img src="{{ book.cover_image | absolute_url }}" alt="{{ book.title }}">
               {% else %}
                 <div class="cover-placeholder">{{ book.title }}</div>
               {% endif %}
