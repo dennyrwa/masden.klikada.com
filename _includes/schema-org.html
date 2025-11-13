@@ -1,0 +1,75 @@
+{% if page.layout == 'post' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ page.title | escape }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ site.author.name }}"
+    },
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    {% if page.last_modified_at %}
+      "dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",
+    {% endif %}
+    "image": "{{ og_image | absolute_url }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ site.title }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ site.default_image | absolute_url }}"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ page.url | replace:'index.html','' | absolute_url }}"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.7",
+      "reviewCount": "130"
+    }
+  }
+  </script>
+{% elsif page.layout == 'book' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "{{ page.title | escape }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ page.penulis | default: site.author.name | escape }}"
+    },
+    "isbn": "{{ page.isbn }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ page.penerbit | escape }}"
+    },
+    "image": "{{ page.cover_image | absolute_url }}"
+  }
+  </script>
+{% elsif page.url == '/about/' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "{{ site.author.name }}",
+    "url": "{{ site.url }}",
+    "image": "{{ site.default_image | absolute_url }}",
+    "sameAs": [
+      "{{ site.socials.linkedin }}",
+      "{{ site.socials.google_scholar }}",
+      "{{ site.socials.sinta }}",
+      "{{ site.socials.orcid }}",
+      "{{ site.socials.github }}"
+    ],
+    "jobTitle": "Dosen dan Peneliti",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Universitas Nahdlatul Ulama Blitar"
+    }
+  }
+  </script>
+{% endif %}

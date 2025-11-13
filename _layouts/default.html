@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: 'id' }}">
+<html lang="{{ page.lang | default: 'id' }}" class="has-navbar-fixed-top">
 
   {% include head.html %}
 
-  <body class"{{ page.body_class }}"> {% include header.html %}
+  <body>
+    
+    {% include header.html %}
 
-    <main class="main-content">
+    <main>
       {{ content }}
     </main>
 

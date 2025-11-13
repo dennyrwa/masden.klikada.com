@@ -3,26 +3,89 @@ layout: default
 body_class: page-home
 ---
 
-<section class="hero-fullscreen">
-  <div class="hero-content">
-    
-    <div class="hero-image">
-      <img src="{{ site.default_image | absolute_url }}" alt="Foto Profil Denny Rakhmad Widi Ashari">
-    </div>
-    
-    <div class="hero-text">
-      <h1>Halo, saya <span class="hero-name">{{ site.author.name }}</span></h1>
-      <p class="hero-subtitle">{{ site.description }}</p>
-      
-      <div class="hero-actions">
-        <a href="{{ '/karya' | absolute_url }}" class="btn btn-primary">Lihat Karya</a>
-        <a href="{{ '/cv' | absolute_url }}" class="btn btn-secondary">Lihat CV</a>
+<section class="hero is-fullheight-with-navbar has-background-light">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered is-mobile is-multiline">
+
+        <div class="column is-full-mobile is-half-tablet is-half-desktop">
+          <h1 class="title is-1 is-spaced" style="font-size: 3.5rem;">
+            COFFE TIME<br>
+            AND MORE...
+          </h1>
+          <h2 class="subtitle is-4">
+            {{ site.description }}
+          </h2>
+          <a href="{{ '/blog' | absolute_url }}" class="button is-primary is-medium is-rounded">
+            <span>BACA BLOG</span>
+            <span class="icon"><i class="fas fa-arrow-right"></i></span>
+          </a>
+        </div>
+
+        <div class="column is-full-mobile is-half-tablet is-half-desktop has-text-centered">
+          <figure class="image is-inline-block">
+            <img class"is-rounded hero-profile-image" src="{{ site.default_image | absolute_url }}" alt="Foto Profil Denny Rakhmad Widi Ashari" style="width: 300px; height: 300px; object-fit: cover;">
+          </figure>
+        </div>
+
       </div>
     </div>
-
   </div>
-  
-  <div class="scroll-indicator">
-    <i class="fas fa-chevron-down"></i>
+</section>
+
+<section class="section has-background-primary-light">
+  <div class="marquee-wrapper">
+    <div class="marquee-content">
+      {% for book in site.books %}
+        <div class="book-marquee-item">
+          <img src="{{ book.cover_image | absolute_url }}" alt="{{ book.title }}">
+          <span class="book-marquee-title">{{ book.title }}</span>
+        </div>
+      {% endfor %}
+      {% for book in site.books %}
+        <div class="book-marquee-item">
+          <img src="{{ book.cover_image | absolute_url }}" alt="{{ book.title }}">
+          <span class="book-marquee-title">{{ book.title }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="title is-2 has-text-centered">Postingan Pilihan</h2>
+    
+    <div class="columns is-multiline">
+      {% assign pinned_posts = site.posts | where: "pinned", true %}
+      {% for post in pinned_posts %}
+        <div class="column is-one-third-desktop is-half-tablet">
+          {% include post-card-bulma.html post=post %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section has-background-light">
+  <div class="container">
+    <h2 class="title is-2 has-text-centered">Postingan Terbaru</h2>
+    
+    <div class="columns is-multiline">
+      {% assign recent_posts = site.posts | where_exp: "post", "post.pinned != true" %}
+      {% for post in recent_posts limit: 3 %}
+        <div class="column is-one-third-desktop is-half-tablet">
+          {% include post-card-bulma.html post=post %}
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="has-text-centered" style="margin-top: 30px;">
+      <a href="{{ '/blog' | absolute_url }}" class="button is-primary is-outlined is-medium">
+        <span>Lihat Semua Postingan</span>
+        <span class="icon"><i class="fas fa-arrow-right"></i></span>
+      </a>
+    </div>
+
   </div>
 </section>

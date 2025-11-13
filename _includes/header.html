@@ -1,33 +1,49 @@
-<header class="site-header">
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="container">
-    <a href="{{ '/' | absolute_url }}" class="site-title">{{ site.title }}</a>
     
-    <nav class="site-nav">
-      <ul>
-        <li><a href="{{ '/about' | absolute_url }}">Tentang Saya</a></li>
-        <li><a href="{{ '/cv' | absolute_url }}">CV & Pengajaran</a></li>
-        <li><a href="{{ '/karya' | absolute_url }}">Karya</a></li>
-        <li><a href="{{ '/blog' | absolute_url }}">Blog/Info</a></li>
-        <li><a href="{{ '/kontak' | absolute_url }}">Kontak</a></li>
-      </ul>
-    </nav>
-    
-    <div class="header-actions">
-      <button id="search-toggle" aria-label="Buka pencarian">
-        <i class="fas fa-search"></i>
-      </button>
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{{ '/' | absolute_url }}">
+        <strong class="is-size-4">{{ site.title }}</strong> 
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarMenu" class="navbar-menu">
       
-      <button id="theme-toggle" aria-label="Ganti tema">
-        <i class="fas fa-moon"></i> </button>
-      
-      <div class="lang-switcher">
-        <a href="#" aria-label="Ubah ke Bahasa Indonesia" class="active">
-          <span class="fi fi-id"></span> <span class="lang-text">ID</span>
-        </a>
-        <a href="#" aria-label="Switch to English">
-          <span class="fi fi-gb"></span> <span class="lang-text">EN</span>
-        </a>
+      <div class="navbar-start">
+        <a class="navbar-item" href="{{ '/about' | absolute_url }}">Tentang Saya</a>
+        <a class="navbar-item" href="{{ '/cv' | absolute_url }}">CV & Pengajaran</a>
+        <a class="navbar-item" href="{{ '/karya' | absolute_url }}">Karya</a>
+        <a class="navbar-item" href="{{ '/blog' | absolute_url }}">Blog/Info</a>
+        <a class="navbar-item" href="{{ '/kontak' | absolute_url }}">Kontak</a>
       </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <button id="search-toggle" class="button is-light is-rounded" aria-label="Buka pencarian">
+              <span class="icon"><i class="fas fa-search"></i></span>
+            </button>
+            
+            <button id="theme-toggle" class="button is-light is-rounded" aria-label="Ganti tema">
+              <span class="icon"><i class="fas fa-moon"></i></span>
+            </button>
+            
+            <a href="#" class="button is-light is-rounded" aria-label="Ubah ke Bahasa Indonesia">
+              <span class="icon"><span class="fi fi-id"></span></span>
+            </a>
+            <a href="#" class="button is-light is-rounded" aria-label="Switch to English">
+              <span class="icon"><span class="fi fi-gb"></span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
-</header>
+</nav>

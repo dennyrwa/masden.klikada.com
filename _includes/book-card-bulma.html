@@ -1,0 +1,20 @@
+<a href="{{ book.url | absolute_url }}" class="card book-card-bulma" title="{{ book.title }}">
+  
+  <div class="card-image">
+    <figure class="image is-2by3"> {% if book.cover_image %}
+        <img src="{{ book.cover_image | absolute_url }}" alt="{{ book.title }}">
+      {% else %}
+        <div class="placeholder-cover">
+          <span>{{ book.title }}</span>
+        </div>
+      {% endif %}
+    </figure>
+  </div>
+  
+  <div class="card-content">
+    <div class="content">
+      <p class="title is-6">{{ book.title | truncate: 50 }}</p>
+      <p class="subtitle is-7">{{ book.tahun }}</p>
+    </div>
+  </div>
+</a>

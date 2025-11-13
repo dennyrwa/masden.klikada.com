@@ -7,13 +7,11 @@
 {% else %}
   {% assign page_title = site.title | escape %}
 {% endif %}
-
 {% if page.description %}
   {% assign page_description = page.description | strip_html | normalize_whitespace | truncate: 160 %}
 {% else %}
   {% assign page_description = site.description %}
 {% endif %}
-
 <title>{{ page_title }} | {{ site.title | escape }}</title>
 <meta name="description" content="{{ page_description }}">
 <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
@@ -22,13 +20,13 @@
 <meta property="og:description" content="{{ page_description }}">
 <meta property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
 <meta property="og:site_name" content="{{ site.title | escape }}">
-{% if page.collection == 'posts' %}
+{% if page.collection == 'posts' or page.layout == 'post' %}
   <meta property="og:type" content="article">
+{% elsif page.layout == 'book' %}
+   <meta property="og:type" content="book">
 {% else %}
   <meta property="og:type" content="website">
 {% endif %}
-
-{% comment %} Logika Gambar OG (V20) {% endcomment %}
 {% if page.image %}
   {% assign og_image = page.image %}
 {% elsif page.cover_image %}
@@ -72,60 +70,4 @@
   <meta name="msvalidate.01" content="{{ site.verification.bing }}">
 {% endif %}
 
-{% if page.layout == 'post' %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "{{ page.title | escape }}",
-    "author": {
-      "@type": "Person",
-      "name": "{{ site.author.name }}"
-    },
-    "datePublished": "{{ page.date | date_to_xmlschema }}",
-    {% if page.last_modified_at %}
-      "dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",
-    {% endif %}
-    "image": "{{ og_image | absolute_url }}",
-    "publisher": {
-      "@type": "Organization",
-      "name": "{{ site.title }}",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "{{ site.default_image | absolute_url }}"
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "{{ page.url | replace:'index.html','' | absolute_url }}"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.7",
-      "reviewCount": "130"
-    }
-  }
-  </script>
-{% elsif page.url == '/about/' %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "{{ site.author.name }}",
-    "url": "{{ site.url }}",
-    "image": "{{ site.default_image | absolute_url }}",
-    "sameAs": [
-      "{{ site.socials.linkedin }}",
-      "{{ site.socials.google_scholar }}",
-      "{{ site.socials.sinta }}",
-      "{{ site.socials.orcid }}",
-      "{{ site.socials.github }}"
-    ],
-    "jobTitle": "Dosen, Peneliti dan Web Developer",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Universitas Nahdlatul Ulama Blitar"
-    }
-  }
-  </script>
-{% endif %}
+{% include schema-org.html %}

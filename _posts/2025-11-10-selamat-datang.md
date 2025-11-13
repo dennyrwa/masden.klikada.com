@@ -7,7 +7,8 @@ categories:
 tags:
   - Update
   - Jekyll
-image: "/assets/images/default-blog.webp" # Ganti ini dengan gambar unggulan
+image: "/assets/images/default-blog.webp" 
+pinned: true # <--- TAMBAHKAN BARIS INI
 ---
 
 Selamat datang di situs baru saya. Ini adalah postingan pertama sebagai contoh.

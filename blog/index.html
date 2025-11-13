@@ -4,35 +4,16 @@ title: Blog & Info
 permalink: /blog/
 ---
 
-<ul class="post-list">
+<h1 class="title is-2">Blog & Info</h1>
+<p class="subtitle is-5">
+  Pemikiran, tutorial, dan update terbaru saya seputar Keuangan Islam Terapan, Manajemen Risiko, dan Teknologi.
+</p>
+<hr>
+
+<div class="columns is-multiline">
   {% for post in site.posts %}
-    <li>
-      <article class="post-card">
-        
-        <a href="{{ post.url | absolute_url }}" class="post-card-image">
-          {% assign img_path = post.image | default: site.default_blog_image %}
-          <img src="{{ img_path | absolute_url }}" alt="{{ post.title }}">
-        </a>
-        
-        <div class="post-card-content">
-          <h2 class="post-card-title">
-            <a href="{{ post.url | absolute_url }}">{{ post.title }}</a>
-          </h2>
-          
-          <div class="post-card-meta">
-            <time datetime="{{ post.date | date_to_xmlschema }}">
-              {{ post.date | date: "%d %B %Y" }}
-            </time>
-          </div>
-          
-          <div class="post-card-excerpt">
-            {{ post.excerpt | strip_html | truncatewords: 30 }}
-          </div>
-          
-          <a href="{{ post.url | absolute_url }}" class="btn btn-secondary btn-sm">Baca Selengkapnya</a>
-        </div>
-        
-      </article>
-    </li>
+    <div class="column is-full-mobile is-half-tablet is-one-third-desktop">
+      {% include post-card-bulma.html post=post %}
+    </div>
   {% endfor %}
-</ul>
+</div>

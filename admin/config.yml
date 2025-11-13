@@ -1,16 +1,17 @@
 # -----------------------------------------------------------------------------
-# KONFIGURASI DECAP CMS (V22)
+# KONFIGURASI DECAP CMS (REWORK V24)
 # -----------------------------------------------------------------------------
 
 # 1. Konfigurasi Backend (GitHub)
 backend:
   name: github
-  # Ganti [USERNAME] dan [REPO] dengan info Anda. Ini placeholder.
-  repo: "{{ site.giscus.repo | default: 'dennyrwa/masden.klikada.com' }}" 
-  branch: main # Branch tempat Anda menyimpan kode
+  # Ambil data dari _config.yml (yang perlu Bapak isi)
+  repo: "{{ site.giscus.repo | default: '[PLACEHOLDER_GITHUB_USERNAME]/[PLACEHOLDER_NAMA_REPO]' }}" 
+  branch: main 
   base_url: "{{ site.url }}"
   
 # 2. Lokasi Media (Gambar yang di-upload)
+# Sesuai V23, Bapak harus optimasi manual sebelum upload
 media_folder: "assets/images/uploads"
 public_folder: "/assets/images/uploads"
 
@@ -18,7 +19,7 @@ public_folder: "/assets/images/uploads"
 # Ini adalah inti dari UI Admin
 collections:
   
-  # --- COLLECTION 1: Postingan Blog ---
+  # --- COLLECTION 1: Postingan Blog (Diperbarui V24) ---
   - name: "blog"
     label: "Postingan Blog"
     label_singular: "Postingan Blog"
@@ -29,12 +30,13 @@ collections:
       - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
       - { label: "Judul", name: "title", widget: "string" }
       - { label: "Tanggal Publikasi", name: "date", widget: "datetime" }
+      - { label: "Sematkan di Beranda (Pinned)?", name: "pinned", widget: "boolean", default: false } # <--- FIELD BARU (V24)
       - { label: "Gambar Unggulan (Featured Image)", name: "image", widget: "image" }
       - { label: "Kategori", name: "categories", widget: "list", allow_add: true, default: ["Artikel"] }
       - { label: "Tags", name: "tags", widget: "list", allow_add: true }
       - { label: "Konten Artikel", name: "body", widget: "markdown" }
 
-  # --- COLLECTION 2: Buku (V22) ---
+  # --- COLLECTION 2: Buku (Sesuai V22) ---
   - name: "books"
     label: "Buku"
     label_singular: "Buku"
@@ -49,18 +51,18 @@ collections:
       - { label: "Penerbit", name: "penerbit", widget: "string" }
       - { label: "Tempat Terbit", name: "tempat_terbit", widget: "string", required: false }
       - { label: "ISBN", name: "isbn", widget: "string", required: false }
-      - { label: "Cover Buku", name: "cover_image", widget: "image" }
+      - { label: "Cover Buku (Wajib Optimasi Manual!)", name: "cover_image", widget: "image" }
       - { label: "Sinopsis", name: "body", widget: "markdown" }
-      - { label: "Sitasi APA7", name: "citation_apa7", widget: "text", required: false }
-      - { label: "Sitasi BibTeX", name: "citation_bibtex", widget: "markdown", required: false }
+      - { label: "Sitasi APA7 (Ambil dari Google Scholar)", name: "citation_apa7", widget: "text", required: false }
+      - { label: "Sitasi BibTeX (Ambil dari Google Scholar)", name: "citation_bibtex", widget: "markdown", required: false }
 
   # --- COLLECTION 3: Pengaturan File Data (File Collections) ---
   # Ini adalah "Grup" untuk semua file _data/*.yml kita
   - name: "data_files"
-    label: "Data Situs"
+    label: "Data Situs (CV & Karya)"
     files:
       
-      # --- File 3a: Publikasi Lainnya (V22) ---
+      # --- File 3a: Publikasi Lainnya (Jurnal, dll) ---
       - name: "publikasi_lain"
         label: "Publikasi (Jurnal, Prosiding, Thesis)"
         file: "_data/publikasi.yml"
@@ -77,10 +79,10 @@ collections:
               - { label: "Tahun", name: "tahun", widget: "number" }
               - { label: "Link Eksternal", name: "link_eksternal", widget: "string", required: false }
               - { label: "Abstrak Singkat", name: "abstrak_singkat", widget: "text", required: false }
-              - { label: "Sitasi APA7", name: "citation_apa7", widget: "text", required: false }
-              - { label: "Sitasi BibTeX", name: "citation_bibtex", widget: "markdown", required: false }
+              - { label: "Sitasi APA7 (Ambil dari Google Scholar)", name: "citation_apa7", widget: "text", required: false }
+              - { label: "Sitasi BibTeX (Ambil dari Google Scholar)", name: "citation_bibtex", widget: "markdown", required: false }
 
-      # --- File 3b: HKI (V17) ---
+      # --- File 3b: HKI ---
       - name: "hki"
         label: "HKI (Hak Kekayaan Intelektual)"
         file: "_data/hki.yml"
@@ -95,7 +97,7 @@ collections:
               - { label: "Jenis", name: "jenis", widget: "string", default: "Hak cipta nasional" }
               - { label: "Tahun", name: "tahun", widget: "number" }
       
-      # --- File 3c: Mata Kuliah (V17) ---
+      # --- File 3c: Mata Kuliah ---
       - name: "mata_kuliah"
         label: "Mata Kuliah Diampu"
         file: "_data/mata_kuliah.yml"
@@ -115,7 +117,7 @@ collections:
                   - { label: "Kode Kelas", name: "kode", widget: "string" }
                   - { label: "Nama Kelas", name: "kelas", widget: "string" }
       
-      # --- File 3d: Pengalaman Kerja (V17) ---
+      # --- File 3d: Pengalaman Kerja ---
       - name: "pengalaman_kerja"
         label: "Pengalaman Kerja (CV)"
         file: "_data/pengalaman_kerja.yml"
@@ -126,7 +128,7 @@ collections:
             widget: "list"
             fields:
               - { label: "Perusahaan", name: "perusahaan", widget: "string" }
-              - { label: "Logo", name: "logo", widget: "image", required: false }
+              - { label: "Logo (Optimasi manual!)", name: "logo", widget: "image", required: false }
               - { label: "Durasi Total", name: "durasi_total", widget: "string" }
               - name: "posisi"
                 label: "Posisi"
@@ -138,7 +140,7 @@ collections:
                   - { label: "Lokasi", name: "lokasi", widget: "string", required: false }
                   - { label: "Deskripsi", name: "deskripsi", widget: "text", required: false }
       
-      # --- File 3e: Pendidikan (V17) ---
+      # --- File 3e: Pendidikan ---
       - name: "pendidikan"
         label: "Pendidikan (CV)"
         file: "_data/pendidikan.yml"
@@ -155,7 +157,7 @@ collections:
               - { label: "Nilai", name: "nilai", widget: "string" }
               - { label: "Kegiatan/Deskripsi", name: "kegiatan", widget: "list" }
 
-      # --- File 3f: Pengalaman Sukarela (V17) ---
+      # --- File 3f: Pengalaman Sukarela ---
       - name: "pengalaman_sukarela"
         label: "Pengalaman Sukarela (CV)"
         file: "_data/pengalaman_sukarela.yml"
@@ -166,7 +168,7 @@ collections:
             widget: "list"
             fields:
               - { label: "Organisasi", name: "organisasi", widget: "string" }
-              - { label: "Logo", name: "logo", widget: "image", required: false }
+              - { label: "Logo (Optimasi manual!)", name: "logo", widget: "image", required: false }
               - { label: "Peran", name: "peran", widget: "string" }
               - { label: "Bidang", name: "bidang", widget: "string" }
               - { label: "Durasi", name: "durasi", widget: "string" }

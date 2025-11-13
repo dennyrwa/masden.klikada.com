@@ -1,82 +1,89 @@
 ---
-layout: default
+layout: page 
 ---
-{% include breadcrumbs.html %}
 
-<div class="container page-container">
-  <article class="post-content">
+<div class="columns is-centered">
+  <div class="column is-four-fifths-desktop is-full-tablet">
 
-    <header class="post-header">
-      <h1>{{ page.title }}</h1>
-      
-      {% include post-meta.html %}
-    </header>
+    <article class="post-content">
 
-    <figure class="featured-image">
-      {% assign img_path = page.image | default: site.default_blog_image %}
-      <img src="{{ img_path | absolute_url }}" alt="{{ page.title }}">
-    </figure>
+      {% include breadcrumbs.html %}
 
-    <section class="table-of-contents">
-      <h3>Daftar Isi</h3>
-      {% toc %}
-    </section>
+      <header class="post-header">
+        <h1 class="title is-1">{{ page.title }}</h1>
+        {% include post-meta.html %}
+      </header>
 
-    <div class="static-rating">
-      <span>★★★★☆</span> 4.7/5 (130 Votes)
-    </div>
+      <figure class="image is-16by9 featured-image has-radius-large">
+        {% assign img_path = page.image | default: site.default_blog_image %}
+        <img src="{{ img_path | absolute_url }}" alt="{{ page.title }}">
+      </figure>
 
-    <section class="post-body">
-      {{ content }}
-    </section>
-
-    {% include share-buttons.html %}
-
-    <footer class="post-footer">
-      <div class="tags-categories">
-        {% if page.categories.size > 0 %}
-          <div class="post-categories">
-            <strong>Kategori:</strong>
-            {% for category in page.categories %}
-              {% assign category_slug = category | slugify %}
-              {% assign category_url = '/kategori/' | append: category_slug %}
-              <a href="{{ category_url | absolute_url }}">{{ category }}</a>
-            {% endfor %}
-          </div>
-        {% endif %}
-        {% if page.tags.size > 0 %}
-          <div class="post-tags">
-            <strong>Tags:</strong>
-            {% for tag in page.tags %}
-              {% assign tag_slug = tag | slugify %}
-              {% assign tag_url = '/tag/' | append: tag_slug %}
-              <a href="{{ tag_url | absolute_url }}">{{ tag }}</a>
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div>
-
-      {% if site.related_posts.size > 0 %}
-        <div class="related-posts">
-          <h3>Postingan Terkait</h3>
-          <ul>
-            {% for post in site.related_posts limit: 3 %}
-              <li>
-                <a href="{{ post.url | absolute_url }}">{{ post.title }}</a>
-              </li>
-            {% endfor %}
-          </ul>
+      <div class="box table-of-contents" id="table-of-contents">
+        <h3 class="title is-5">Daftar Isi</h3>
         </div>
-      {% endif %}
-
-      <div class="post-cta">
-        <h4>Punya Pertanyaan atau Ide Kolaborasi?</h4>
-        <p>Saya mengundang Anda untuk berdiskusi lebih lanjut di bagian komentar di bawah, atau hubungi saya langsung melalui halaman kontak.</p>
-        <a href="{{ '/kontak' | absolute_url }}" class="btn btn-secondary">Hubungi Saya</a>
+      
+      <div class="static-rating content is-medium">
+        <span>★★★★☆</span> 4.7/5 (130 Votes)
       </div>
-    </footer>
 
-    {% include giscus.html %}
+      <section class="content is-medium post-body">
+        {{ content }}
+      </section>
 
-  </article>
+      {% include share-buttons.html %}
+
+      <footer class="box post-footer">
+        
+        <div class="tags-categories">
+          {% if page.categories.size > 0 %}
+            <div class="field is-grouped is-grouped-multiline">
+              <div class="control"><strong class="mr-2">Kategori:</strong></div>
+              {% for category in page.categories %}
+                <div class="control">
+                  <a href="{{ '/kategori/' | append: (category | slugify) | absolute_url }}" class="tag is-primary">{{ category }}</a>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if page.tags.size > 0 %}
+            <div class="field is-grouped is-grouped-multiline" style="margin-top: 1rem;">
+              <div class="control"><strong class="mr-2">Tags:</strong></div>
+              {% for tag in page.tags %}
+                <div class="control">
+                  <a href="{{ '/tag/' | append: (tag | slugify) | absolute_url }}" class="tag is-light">{{ tag }}</a>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if site.related_posts.size > 0 %}
+          <div class="related-posts content">
+            <hr>
+            <h3 class="title is-5">Postingan Terkait</h3>
+            <ul>
+              {% for post in site.related_posts limit: 3 %}
+                <li>
+                  <a href="{{ post.url | absolute_url }}">{{ post.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="notification is-primary is-light post-cta">
+          <h4 class="title is-5">Punya Pertanyaan?</h4>
+          <p>Saya mengundang Anda untuk berdiskusi di bagian komentar di bawah, atau hubungi saya langsung.</p>
+          <a href="{{ '/kontak' | absolute_url }}" class="button is-primary is-outlined">Hubungi Saya</a>
+        </div>
+      </footer>
+
+      <div class="box">
+        {% include giscus.html %}
+      </div>
+
+    </article>
+    
+  </div>
 </div>

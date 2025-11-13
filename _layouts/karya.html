@@ -1,144 +1,177 @@
 ---
-layout: default
+layout: page
 ---
 
-<div class="container page-container karya-page">
-  <article class="page-content">
+<div class="level is-mobile">
+  <div class="level-left">
+    <h1 class="title is-2">Karya</h1>
+  </div>
+  <div class="level-right">
+    <button id="print-karya-btn" class="button is-primary is-rounded">
+      <span class="icon"><i class="fas fa-download"></i></span>
+      <span>Unduh sebagai PDF</span>
+    </button>
+  </div>
+</div>
+<hr>
+
+<div class="tabs is-centered is-boxed" id="karya-tabs">
+  <ul>
+    <li class="is-active" data-tab="content-buku">
+      <a>
+        <span class="icon is-small"><i class="fas fa-book-open"></i></span>
+        <span>Buku</span>
+      </a>
+    </li>
+    <li data-tab="content-publikasi">
+      <a>
+        <span class="icon is-small"><i class="fas fa-file-alt"></i></span>
+        <span>Publikasi Ilmiah</span>
+      </a>
+    </li>
+    <li data-tab="content-hki">
+      <a>
+        <span class="icon is-small"><i class="fas fa-certificate"></i></span>
+        <span>HKI</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="karya-tab-content">
+
+  <div class="tab-pane is-active" id="content-buku">
+    <div class="columns is-multiline">
+      {% assign books = site.books | sort: "tahun" | reverse %}
+      {% for book in books %}
+        <div class="column is-one-quarter-desktop is-one-third-tablet">
+          {% include book-card-bulma.html book=book %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="tab-pane" id="content-publikasi" style="display: none;">
+    <div class="level is-mobile academic-links">
+      <div class="level-left">
+        <div class="level-item">
+          <p class="subtitle is-5">Lihat juga di:</p>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="buttons">
+          <a href="{{ site.socials.google_scholar }}" target="_blank" rel="noopener noreferrer" class="button is-light"><span class="icon"><i class="fas fa-graduation-cap"></i></span><span>Google Scholar</span></a>
+          <a href="{{ site.socials.sinta }}" target="_blank" rel="noopener noreferrer" class="button is-light"><span class="icon"><i class="fas fa-book"></i></span><span>Sinta</span></a>
+          <a href="{{ site.socials.orcid }}" target="_blank" rel="noopener noreferrer" class="button is-light"><span class="icon"><i class="fab fa-orcid"></i></span><span>ORCID</span></a>
+        </div>
+      </div>
+    </div>
     
-    <header class="page-header cv-header"> <h1>{{ page.title }}</h1>
-      <button id="print-karya-btn" class="btn btn-secondary">
-        <i class="fas fa-download"></i> Unduh sebagai PDF
-      </button>
-    </header>
-
-    <section id="karya-buku" class="karya-section">
-      <h2><i class="fas fa-book-open"></i> Buku</h2>
-      <div class="book-gallery">
-        {% assign books = site.books | sort: "tahun" | reverse %}
-        {% for book in books %}
-          <a href="{{ book.url | absolute_url }}" class="book-card">
-            <div class="book-card-cover">
-              {% if book.cover_image %}
-                <img src="{{ book.cover_image | absolute_url }}" alt="{{ book.title }}">
-              {% else %}
-                <div class="cover-placeholder">{{ book.title }}</div>
-              {% endif %}
-            </div>
-            <div class="book-card-info">
-              <h4 class="book-card-title">{{ book.title }}</h4>
-              <span class="book-card-year">{{ book.tahun }}</span>
-            </div>
-          </a>
-        {% endfor %}
-      </div>
-    </section>
-
-    <hr class="section-divider">
-
-    <section id="karya-publikasi" class="karya-section">
-      <h2><i class="fas fa-file-alt"></i> Publikasi Ilmiah</h2>
-      
-      <div class="academic-links">
-        <a href="{{ site.socials.google_scholar }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><i class="fas fa-graduation-cap"></i> Google Scholar</a>
-        <a href="{{ site.socials.sinta }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><i class="fas fa-book"></i> Sinta</a>
-        <a href="{{ site.socials.orcid }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><i class="fab fa-orcid"></i> ORCID</a>
-      </div>
-
-      <div class="karya-controls">
-        <div class="control-group">
-          <label for="karya-category-filter">Filter Kategori:</label>
-          <select id="karya-category-filter">
-            <option value="Semua">Semua Publikasi</option>
-            <option value="Jurnal">Jurnal</option>
-            <option value="Jurnal Pengabdian">Jurnal Pengabdian</option>
-            <option value="Prosiding">Prosiding</option>
-            <option value="Thesis">Thesis</option>
-          </select>
+    <div class="box karya-controls">
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Filter:</label>
         </div>
-        <div class="control-group">
-          <label>Sortir Tahun:</label>
-          <button id="karya-sort-toggle" data-sort="desc">
-            Terbaru <i class="fas fa-chevron-down"></i>
-          </button>
+        <div class="field-body">
+          <div class="field">
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="karya-category-filter">
+                  <option value="Semua">Semua Publikasi</option>
+                  <option value="Jurnal">Jurnal</option>
+                  <option value="Jurnal Pengabdian">Jurnal Pengabdian</option>
+                  <option value="Prosiding">Prosiding</option>
+                  <option value="Thesis">Thesis</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button id="karya-sort-toggle" class="button is-light" data-sort="desc">
+                <span>Terbaru</span>
+                <span class="icon"><i class="fas fa-chevron-down"></i></span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="table-responsive">
-        <table class="karya-table">
-          <thead>
-            <tr>
-              <th>Tahun</th>
-              <th>Judul</th>
-              <th>Kategori</th>
-              <th>Detail</th>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped is-hoverable karya-table">
+        <thead>
+          <tr>
+            <th>Tahun</th>
+            <th>Judul</th>
+            <th>Kategori</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody id="karya-table-body">
+          {% assign publications = site.data.publikasi | sort: "tahun" | reverse %}
+          {% for pub in publications %}
+            <tr class="karya-item" data-category="{{ pub.kategori | escape }}" data-year="{{ pub.tahun }}">
+              <td class="cell-tahun">{{ pub.tahun }}</td>
+              <td class="cell-judul">{{ pub.judul }}</td>
+              <td class="cell-kategori">{{ pub.kategori }}</td>
+              <td class="cell-detail has-text-centered">
+                <button class="button is-primary is-small is-rounded btn-detail" aria-label="Tampilkan detail">
+                  <span class="icon"><i class="fas fa-plus"></i></span>
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody id="karya-table-body">
-            {% assign publications = site.data.publikasi | sort: "tahun" | reverse %}
-            {% for pub in publications %}
-              <tr class="karya-item" data-category="{{ pub.kategori | escape }}" data-year="{{ pub.tahun }}">
-                <td class="cell-tahun">{{ pub.tahun }}</td>
-                <td class="cell-judul">{{ pub.judul }}</td>
-                <td class="cell-kategori">{{ pub.kategori }}</td>
-                <td class="cell-detail">
-                  <button class="btn-detail" aria-label="Tampilkan detail">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </td>
-              </tr>
-              <tr class="detail-row" style="display: none;">
-                <td colspan="4">
-                  <div class="detail-content">
-                    <p><strong>Penulis:</strong> {{ pub.penulis | default: "N/A" }}</p>
-                    <p><strong>Info Penerbit:</strong> {{ pub.penerbit_info | default: "N/A" }}</p>
-                    {% if pub.link_eksternal != "" and pub.link_eksternal != nil %}
-                      <p><a href="{{ pub.link_eksternal }}" target="_blank" rel="noopener noreferrer">Lihat Publikasi <i class="fas fa-external-link-alt"></i></a></p>
-                    {% endif %}
-                    
-                    <div class="citation-buttons">
-                      <button class="btn-copy" data-clipboard-text="{{ pub.citation_apa7 | escape }}">
-                        <i class="fas fa-copy"></i> Salin APA7
-                      </button>
-                      <button class="btn-copy" data-clipboard-text="{{ pub.citation_bibtex | escape }}">
-                        <i class="fas fa-file-code"></i> Salin BibTeX
-                      </button>
-                    </div>
+            <tr class="detail-row" style="display: none;">
+              <td colspan="4">
+                <div class="detail-content">
+                  <p><strong>Penulis:</strong> {{ pub.penulis | default: "N/A" }}</p>
+                  <p><strong>Info Penerbit:</strong> {{ pub.penerbit_info | default: "N/A" }}</p>
+                  {% if pub.link_eksternal != "" and pub.link_eksternal != nil %}
+                    <p><a href="{{ pub.link_eksternal }}" target="_blank" rel="noopener noreferrer">Lihat Publikasi <i class="fas fa-external-link-alt"></i></a></p>
+                  {% endif %}
+                  
+                  <div class="buttons citation-buttons">
+                    <button class="button is-small is-primary is-outlined btn-copy" data-clipboard-text="{{ pub.citation_apa7 | escape }}">
+                      <span class="icon"><i class="fas fa-copy"></i></span>
+                      <span>Salin APA7</span>
+                    </button>
+                    <button class="button is-small is-primary is-outlined btn-copy" data-clipboard-text="{{ pub.citation_bibtex | escape }}">
+                      <span class="icon"><i class="fas fa-file-code"></i></span>
+                      <span>Salin BibTeX</span>
+                    </button>
                   </div>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <hr class="section-divider">
-
-    <section id="karya-hki" class="karya-section">
-      <h2><i class="fas fa-certificate"></i> Hak Kekayaan Intelektual (HKI)</h2>
-      <div class="table-responsive">
-        <table class="hki-table">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Judul Karya</th>
-              <th>Jenis Karya</th>
-              <th>Tahun</th>
+                </div>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {% for hki in site.data.hki %}
-              <tr>
-                <td>{{ hki.no }}</td>
-                <td>{{ hki.judul }}</td>
-                <td>{{ hki.jenis }}</td>
-                <td>{{ hki.tahun }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </section>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  </article>
+  <div class="tab-pane" id="content-hki" style="display: none;">
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped hki-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Judul Karya</th>
+            <th>Jenis Karya</th>
+            <th>Tahun</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for hki in site.data.hki %}
+            <tr>
+              <td>{{ hki.no }}</td>
+              <td>{{ hki.judul }}</td>
+              <td>{{ hki.jenis }}</td>
+              <td>{{ hki.tahun }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
 </div>
